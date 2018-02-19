@@ -72,13 +72,13 @@ class SlepeMapyData(object):
                                                 batch_size, len(self.data))])
         #TODO refactor
         questions_target = questions
-        answers_target = answers
+        answers_target = answers.copy()
         for i in range(batch_size):
-            temp = questions[i].copy() #python3
-            temp2 = deepcopy(answers[i]) #python3
-            questions[i] = deepcopy(questions[i][:-1])
+            temp = questions[i] 
+            temp2 = answers[i] 
+            questions[i] = temp[:-1]
             questions_target[i] = temp[1:]
-            answers[i] = answers[i][:-1]
+            answers[i] = temp2[:-1]
             answers_target[i] = temp2[1:]
         self.batch_id = min(self.batch_id + batch_size, len(self.data))
         return questions, answers, questions_target, answers_target, batch_seqlen
