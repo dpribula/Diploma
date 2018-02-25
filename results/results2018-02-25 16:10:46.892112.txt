@@ -1,0 +1,2 @@
+Step 0.00 Loss 0.68 
+Epoch train RMSE is: 0.48 

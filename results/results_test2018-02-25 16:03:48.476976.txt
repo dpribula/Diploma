@@ -1,0 +1,5 @@
+Epoch test RMSE is: 0.48 
+Epoch test RMSE is: 0.47 
+Epoch test RMSE is: 0.46 
+Epoch test RMSE is: 0.45 
+Epoch test RMSE is: 0.45 

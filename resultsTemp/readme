@@ -1,0 +1,30 @@
+Tests:
+Students: 100
+Sequence: 20
+Epochs: 1000
+
+Files:
+generated_test.txt --> test dataset
+generated_train.txt --> train dataset
+predictions_test --> predictions made by NN on test dataset
+predictions_train --> predictions made by NN on train dataset
+results_test --> results of test dataset evaluation on each epoch
+results_train --> results of train dataset evaluation on each epoch
+
+Graphs:
+blue line --> test_set RMSE
+orange line --> train_set RMSE
+--------------------------------------
+
+4 folder containing data for tests on different datasets.
+
+ones --> dataset with random question id's and all correct answers
+ones2 --> dataset with same question id's and all correct answers
+random --> random answers
+activation --> start with sequence of zeros after activation with low probablity 
+	       continue with ones till end of the sequence
+prob20 --> dataset with answers with probablity 20% to be incorrect
+zeroone --> dataset with answers 0 followed by 1 eg. 0101010101... and same question id
+zeroone2 --> same as zeroone with question id different for 0 and 1
+zeroone3 --> same as zeroone with question id's from 1 to 20
+
