@@ -23,8 +23,8 @@ for i in range(0,STUDENTS):
     test_data.insert(i,[[],[]])
     test_data[i][0]= questions2#generate_random_list()
     test_data[i][1] = generate_list()
-writer_test = csv.writer(open('./datasets/generated_train.txt', "w"))
-writer_train = csv.writer(open('./datasets/generated_test.txt', "w"))
+writer_test = csv.writer(open('../datasets/generated_train.txt', "w"))
+writer_train = csv.writer(open('../datasets/generated_test.txt', "w"))
 
 for i in range(0,STUDENTS):
     writer_test.writerow([len(train_data[i][0])])

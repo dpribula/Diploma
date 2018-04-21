@@ -12,8 +12,6 @@ def read_dataset(path):
     file = open(path,'r')
     count = 0
     for line in file:
-        questions = []
-        correct = []
         line_data = line.split(",")
         max_seq_len = max(max_seq_len, len(line_data))
         if (count % 3) == 0:
@@ -43,10 +41,12 @@ def add_padding(data, length):
         while(len(entry)<length):
             entry.append(int(0))
 
+
 class SlepeMapyData(object):
     def __init__(self,path):
         self.data, self.labels, self.seqlen, self.max_seq_len = read_dataset(path)
         self.batch_id = 0
+
     def next(self, batch_size):
         if self.batch_id == len(self.data):
             self.batch_id = 0
@@ -57,7 +57,7 @@ class SlepeMapyData(object):
         batch_seqlen = (self.seqlen[self.batch_id:min(self.batch_id +
                                                 batch_size, len(self.data))])
         #TODO refactor
-        questions_target = questions
+        questions_target = questions.copy()
         answers_target = answers.copy()
         for i in range(batch_size):
             temp = questions[i] 

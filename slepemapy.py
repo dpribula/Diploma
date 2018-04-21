@@ -12,24 +12,24 @@ import evaluation_helper
 
 
 # Limiting number of student for performance
-STUDENTS_COUNT = 100
+STUDENTS_COUNT = 10000
 TIMESTAMP = str(datetime.datetime.now())
 
-#train_path = "./datasets/generated_train.txt"
-#test_path = "./datasets/generated_test.txt"
+
 ### DEBUG 
-train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
-test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+train_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+test_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+
 num_steps = 0
 train_set = data_helper.SlepeMapyData(train_path)
 num_steps = train_set.max_seq_len 
 test_set = data_helper.SlepeMapyData(test_path)
 
-num_epochs = 1000
+num_epochs = 10
 total_series_length = num_steps * STUDENTS_COUNT 
 state_size = 64 # number of hidden neurons
-num_classes = 21 # number of classes
-batch_size = 50
+num_classes = 100 # number of classes
+batch_size = 10
 num_batches = total_series_length//batch_size//num_steps
 learning_rate = 0.1
 #TODO think if needed --> if not delete 
@@ -55,7 +55,7 @@ target_one_hot = tf.one_hot(target_x, num_skills)
 rnn_inputs = tf.one_hot(x, num_skills)
 y_2 = tf.reshape(y, [-1, num_steps, 1])
 rnn_inputs = tf.concat([rnn_inputs, y_2], axis=2)
-#labels_series = tf.unstack(target_x, axis=1)
+# labels_series = tf.unstack(target_x, axis=1)
 # 
 # FORWARD PASS
 #
@@ -70,24 +70,17 @@ with tf.variable_scope('softmax'):
 logits = tf.reshape(tf.matmul(tf.reshape(output, [-1, state_size]), W) + b,
             [-1, num_steps, num_classes])
 predictions_series = tf.sigmoid(logits)
-#msqrt = tf.sqrt(tf.reduce_sum(tf.square(predictions_series - target_label_s) * target_one_hot)
+#m sqrt = tf.sqrt(tf.reduce_sum(tf.square(predictions_series - target_label_s) * target_one_hot)
 
 #
-#BACKPROPAGATION
-#
-# selected_logits = tf.reshape(logits, [-1, num_classes])
-# selected_logits2 = tf.gather(selected_logits, target_x, axis=1)
-# #test1 = tf.gather(selected_logits, target_x, axis=2)
-# test2 = tf.gather(selected_logits, target_x, axis=0)
+# BACKPROPAGATION
 target_label_s = target_label_s * target_one_hot
-logits = logits * target_one_hot 
+logits = logits * target_one_hot
 losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=logits)
-#losses = tf.reduce_sum(losses)
-#losses = tf.reduce_sum(losses * target_one_hot, axis=-1)
 total_loss = tf.reduce_mean(losses)
 train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
 
-###### END OF MODEL
+# ##### END OF MODEL
 
 graph_loss = []
 graph_rmse_train = []
@@ -140,14 +133,14 @@ with tf.Session() as sess:
         prediction_labels =  np.array(test_set.labels)[:,1:]
         # We do not need target as we are not learning on test dataset
         test_predictions = sess.run(predictions_series,
-                    feed_dict={
+                        feed_dict={
                             x:test_question,
                             y:test_labels,
                             seqlen:test_set.seqlen})
         print("--------------------------------")
         print("Calculating test set predictions")
         
-        questions = evaluation_helper.get_questions(test_question)
+        questions = evaluation_helper.get_questions(prediction_question)
         # Cutting out padding data from predictions
         pred_labels = evaluation_helper.get_predictions(test_predictions, questions)       
         correct_labels = evaluation_helper.get_labels(prediction_labels, questions)

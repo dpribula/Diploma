@@ -15,7 +15,7 @@ def generate_list():
 
 train_data = []
 test_data = []
-question_list = [1 for _ in range(0,20)]
+question_list = [i for i in range(0,20)]
 for i in range(0,STUDENTS):
     train_data.insert(i,[[],[]])
     train_data[i][0]= question_list
