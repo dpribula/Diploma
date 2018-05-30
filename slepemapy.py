@@ -1,7 +1,7 @@
 from __future__ import print_function, division
 from math import sqrt
-from sklearn.metrics import mean_squared_error
-import numpy as np
+from sklearn import metrics
+from scipy.stats.stats import pearsonr
 import tensorflow as tf
 import datetime
 ### my imports
@@ -10,33 +10,40 @@ import output_writer
 import graph_helper
 import evaluation_helper
 
-
 # Limiting number of student for performance
-STUDENTS_COUNT = 10000
+STUDENTS_COUNT_MAX = 3000
+BATCH_SIZE = 10
+NUM_BATCHES = STUDENTS_COUNT_MAX // BATCH_SIZE
 TIMESTAMP = str(datetime.datetime.now())
 
+assert(STUDENTS_COUNT_MAX % BATCH_SIZE == 0)
 
-### DEBUG 
-train_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
-test_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+### DEBUG
+test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+test_path = "/home/dave/projects/diploma/datasets/world_test.csv"
+train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+train_path = "/home/dave/projects/diploma/datasets/world_train.csv"
 
 num_steps = 0
-train_set = data_helper.SlepeMapyData(train_path)
-num_steps = train_set.max_seq_len 
-test_set = data_helper.SlepeMapyData(test_path)
+train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
+test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, True)
+# TODO check padding as it will not work if test set has more data
+num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
+print(train_set.max_seq_len)
+print(test_set.max_seq_len)
 
-num_epochs = 10
-total_series_length = num_steps * STUDENTS_COUNT 
-state_size = 64 # number of hidden neurons
-num_classes = 100 # number of classes
-batch_size = 10
-num_batches = total_series_length//batch_size//num_steps
-learning_rate = 0.1
-#TODO think if needed --> if not delete 
+num_epochs = 1000
+state_size = 100 # number of hidden neurons
+# TODO get this from dataset
+num_classes = max(train_set.num_questions, test_set.num_questions) + 1  # number of classes
+
+print(NUM_BATCHES)
+learning_rate = 10
+# TODO think if needed --> if not delete
 num_skills = num_classes
     
 ##########
-### MODEL 
+#  MODEL
 ##########
 
 # PLACEHOLDERS
@@ -62,7 +69,7 @@ rnn_inputs = tf.concat([rnn_inputs, y_2], axis=2)
 cell = tf.nn.rnn_cell.BasicLSTMCell(state_size, state_is_tuple=True)
 # possible to add initial state initial_state=init_state
 output, current_state = tf.nn.dynamic_rnn(cell=cell, inputs=rnn_inputs, sequence_length=seqlen, dtype=tf.float32)
-# TODO embedding one how vector tf.nn.embeddinglookup check possible improvements
+# TODO embedding one how vector tf.nn.embedding lookup check possible improvements
 with tf.variable_scope('softmax'):
     W = tf.get_variable('W', [state_size, num_classes])
     b = tf.get_variable('b', [num_classes], initializer=tf.constant_initializer(0.0))
@@ -70,12 +77,12 @@ with tf.variable_scope('softmax'):
 logits = tf.reshape(tf.matmul(tf.reshape(output, [-1, state_size]), W) + b,
             [-1, num_steps, num_classes])
 predictions_series = tf.sigmoid(logits)
-#m sqrt = tf.sqrt(tf.reduce_sum(tf.square(predictions_series - target_label_s) * target_one_hot)
 
 #
 # BACKPROPAGATION
 target_label_s = target_label_s * target_one_hot
 logits = logits * target_one_hot
+#TODO  check if loss function workds properly
 losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=logits)
 total_loss = tf.reduce_mean(losses)
 train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
@@ -86,72 +93,121 @@ graph_loss = []
 graph_rmse_train = []
 graph_rmse_test = []
 
+
+def run_train():
+    print("New data, epoch", epoch_idx)
+    questions = []
+    prediction_labels = []
+    correct_labels = []
+    for step in range(NUM_BATCHES):
+        batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq = train_set.next(BATCH_SIZE, num_steps)
+
+        _total_loss, _train_step, _predictions_series = sess.run(
+            [total_loss, train_step, predictions_series],
+            feed_dict={
+                x: batch_X,
+                y: batch_Y,
+                target_x: batch_target_X,
+                target_y: batch_target_Y,
+                seqlen: batch_seq
+            })
+
+        questions = evaluation_helper.get_questions(batch_target_X)
+        prediction_labels += evaluation_helper.get_predictions(_predictions_series, questions)
+        correct_labels += evaluation_helper.get_labels(batch_target_Y, questions)
+
+        # OUTPUT
+        output_writer.output_visualization('visualization/data.txt',
+                                           batch_target_X, batch_target_Y, batch_seq, _predictions_series, step)
+
+
+
+        # EVALUATION
+        if step + 1 >= NUM_BATCHES:
+            rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
+            auc = evaluation_helper.auc(correct_labels, prediction_labels)
+            pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
+            accurracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
+            #pearson = pearson * pearson
+
+            loss_list.append(_total_loss)
+            graph_loss.append(_total_loss)
+            graph_rmse_train.append(rmse)
+            print("Step", step, "Loss", _total_loss)
+            print("Epoch train RMSE is: ", rmse)
+            print("AUC is: ", auc)
+            print("Accuracy is: ", accurracy)
+            print("Pearson coef is:", pearson)
+
+            output_writer.output_results('results/results' + TIMESTAMP + '.txt', step, _total_loss, rmse, auc)
+            output_writer.output_predictions('results/predictions_train.txt', questions, prediction_labels,
+                                            correct_labels)
+
+
+def run_test():
+    print("--------------------------------")
+    print("Calculating test set predictions")
+    questions = []
+    prediction_labels = []
+    correct_labels = []
+    # TODO MAKE TO WORK IN GENERAL
+    for i in range(NUM_BATCHES // 10):
+        test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
+        # We do not need target as we are not learning on test dataset
+        test_predictions = sess.run(predictions_series,
+                                    feed_dict={x: test_batch_X,
+                                               y: test_batch_Y,
+                                               seqlen: test_batch_seq})
+
+        questions = (evaluation_helper.get_questions(test_batch_target_X))
+        prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
+        correct_labels += (evaluation_helper.get_labels(test_batch_target_Y, questions))
+        # OUTPUT
+        output_writer.output_visualization('visualization/test_data.txt',
+                                           test_batch_target_X, test_batch_target_Y, test_batch_seq, test_predictions, i)
+        with open('results/results_test' + str(i) + '.txt', 'a') as f:
+            rmse_test = sqrt(metrics.mean_squared_error(prediction_labels, correct_labels))
+            auc_test = metrics.roc_auc_score(correct_labels, prediction_labels)
+            f.write("Epoch test RMSE is: %.3f \n" % rmse_test)
+            f.write("Epoch test AUC is: %.3f \n\n" % auc_test)
+            f.write("-------------------------------------------------------------------------------------- \n")
+
+
+    # EVALUATION
+    rmse_test = evaluation_helper.rmse(correct_labels, prediction_labels)
+    auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
+    pearson_test = evaluation_helper.pearson(correct_labels, prediction_labels)
+    accurracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
+
+    graph_rmse_test.append(rmse_test)
+    with open('results/results_test' + TIMESTAMP + '.txt', 'a') as f:
+        f.write("Epoch test RMSE is: %.3f \n" % rmse_test)
+        f.write("Epoch test AUC is: %.3f \n\n" % auc_test)
+        f.write("-------------------------------------------------------------------------------------- \n")
+
+    print("RMSE for test set:%.5f" % rmse_test)
+    print("AUC for test set:%.5f" % auc_test)
+    print("Pearson coef is:", pearson_test)
+    print("Accuracy is:", accurracy_test)
+
+    print("--------------------------------")
+    output_writer.output_predictions('results/predictions_test' + TIMESTAMP + '.txt', questions, prediction_labels,
+                                     correct_labels)
+
+
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     loss_list = []
-    
+
+    #
+    # Training
+    #
     for epoch_idx in range(num_epochs):
-        print("New data, epoch", epoch_idx)
+        run_train()
 
-        for step in range(num_batches):
-            batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq = train_set.next(batch_size)
-
-            _total_loss, _train_step, _predictions_series = sess.run(
-                [total_loss, train_step,  predictions_series],
-                feed_dict={
-                    x:batch_X,
-                    y:batch_Y,
-                    target_x:batch_target_X,
-                    target_y:batch_target_Y,
-                    seqlen:batch_seq                   
-                })
-           
-            if step % 100 == 0:
-                questions = evaluation_helper.get_questions(batch_target_X)
-                pred_labels_without0 = evaluation_helper.get_predictions(_predictions_series, questions)       
-                correct_labels_without0 = evaluation_helper.get_labels(batch_target_Y, questions)
-                
-                rmse = sqrt(mean_squared_error(pred_labels_without0, correct_labels_without0))
-
-                loss_list.append(_total_loss)
-                graph_loss.append(_total_loss)
-                graph_rmse_train.append(rmse)
-                
-                print("Step",step, "Loss", _total_loss)
-                print("Epoch train RMSE is: ", rmse)
-                
-                output_writer.output_results('results/results'+TIMESTAMP +'.txt', step, _total_loss,rmse)    
-                output_writer.output_predictions('results/predictions_train.txt', questions, pred_labels_without0, correct_labels_without0)
-               
         ###
         ### TESTING DATASET
         ###
-        ### TODO do in batches for memory efficiency
-        test_question = np.array(test_set.data)[:,:-1]
-        test_labels = np.array(test_set.labels)[:,:-1]
-        prediction_question = np.array(test_set.data)[:,1:]
-        prediction_labels =  np.array(test_set.labels)[:,1:]
-        # We do not need target as we are not learning on test dataset
-        test_predictions = sess.run(predictions_series,
-                        feed_dict={
-                            x:test_question,
-                            y:test_labels,
-                            seqlen:test_set.seqlen})
-        print("--------------------------------")
-        print("Calculating test set predictions")
-        
-        questions = evaluation_helper.get_questions(prediction_question)
-        # Cutting out padding data from predictions
-        pred_labels = evaluation_helper.get_predictions(test_predictions, questions)       
-        correct_labels = evaluation_helper.get_labels(prediction_labels, questions)
-        
-        rmse_test = sqrt(mean_squared_error(pred_labels, correct_labels))
-        graph_rmse_test.append(rmse_test)
-        with open('results/results_test'+TIMESTAMP +'.txt','a') as f:
-                    f.write("Epoch test RMSE is: %.2f \n" % rmse_test)
-        print("RMSE for test set:%.5f" % rmse_test)
-        print("--------------------------------")
-        print(len(correct_labels))
-        output_writer.output_predictions('results/predictions_test' +TIMESTAMP +'.txt',questions,pred_labels,correct_labels)
+        run_test()
 
 graph_helper.show_graph(graph_rmse_train, graph_rmse_test)

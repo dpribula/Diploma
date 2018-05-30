@@ -15,8 +15,8 @@ for i in range(0,1000):
     train_data[i][0]= question_list
     train_data[i][1] = generate_list()
 
-writer_test = csv.writer(open('./datasets/generated_train.txt', "w"))
-writer_train = csv.writer(open('./datasets/generated_test.txt', "w"))
+writer_test = csv.writer(open('.././datasets/generated_train.txt', "w"))
+writer_train = csv.writer(open('.././datasets/generated_test.txt', "w"))
 
 for i in range(0,1000):
     writer_test.writerow([len(train_data[i][0])])

@@ -1,36 +1,46 @@
-
-STUDENTS_COUNT = 100
-max_seq_len = 0
+from sklearn.utils import shuffle
 #
 # Parsing dataset into data, labels and their lengths
 #
-def read_dataset(path):
+def read_dataset(path, max_count, batch_size, test_set):
     data = []
     labels = []
     seq_len = []
-    max_seq_len = 0
+    max_length = 0
+    num_questions = 0
     file = open(path,'r')
     count = 0
     for line in file:
         line_data = line.split(",")
-        max_seq_len = max(max_seq_len, len(line_data))
+        max_length = max(max_length, len(line_data))
         if (count % 3) == 0:
             count += 1
             continue
         elif (count % 3) == 1:
-            data.append(list(map(lambda x:int(x), line_data)))
+            num_questions = max(num_questions, max(map(int, line_data)))
+            data.append(list(map(int, line_data)))
             seq_len.append(len(line_data)-1)
             count += 1
         elif (count % 3) == 2:
-            labels.append(list(map(lambda x:int(x), line_data)))
+            labels.append(list(map(int, line_data)))
             count += 1
             
-        if count >= STUDENTS_COUNT*3:
+        if count >= max_count*3:
             break
-    add_padding(data, max_seq_len)
-    add_padding(labels,max_seq_len)
+        if count*5 >= max_count*3 and test_set:
+            break
+    # data, labels, seq_len = shuffle(data, labels, seq_len)
+    print("Max dataset sequence: ", max_length)
+    print("Max question id: ", num_questions)
+    print("Dataset count: ", len(data))
+    print("Dataset count: ", len(labels))
+    print("Dataset count: ", len(seq_len))
+    return data, labels, seq_len, max_length - 1, num_questions
 
-    return data, labels, seq_len, max_seq_len -1
+
+def get_global_variables_from_dataset():
+    return 0
+
 
 #
 # Adding zeros to max length to data 
@@ -38,24 +48,20 @@ def read_dataset(path):
 #
 def add_padding(data, length):
     for entry in data:
-        while(len(entry)<length):
+        while len(entry) < length:
             entry.append(int(0))
 
 
 class SlepeMapyData(object):
-    def __init__(self,path):
-        self.data, self.labels, self.seqlen, self.max_seq_len = read_dataset(path)
+    def __init__(self,path, max_count, batch_size, test_set):
+        self.data, self.labels, self.seqlen, self.max_seq_len , self.num_questions = read_dataset(path, max_count, batch_size, test_set)
         self.batch_id = 0
-
-    def next(self, batch_size):
+    def next(self, batch_size, padding_size):
         if self.batch_id == len(self.data):
             self.batch_id = 0
-        questions = (self.data[self.batch_id:min(self.batch_id +
-                                                batch_size, len(self.data))])
-        answers = (self.labels[self.batch_id:min(self.batch_id +
-                                                batch_size, len(self.data))])
-        batch_seqlen = (self.seqlen[self.batch_id:min(self.batch_id +
-                                                batch_size, len(self.data))])
+        questions = (self.data[self.batch_id:self.batch_id + batch_size])
+        answers = (self.labels[self.batch_id:self.batch_id + batch_size])
+        batch_seq_len = (self.seqlen[self.batch_id:self.batch_id + batch_size])
         #TODO refactor
         questions_target = questions.copy()
         answers_target = answers.copy()
@@ -66,6 +72,9 @@ class SlepeMapyData(object):
             questions_target[i] = temp[1:]
             answers[i] = temp2[:-1]
             answers_target[i] = temp2[1:]
-            temp = []
         self.batch_id = min(self.batch_id + batch_size, len(self.data))
-        return questions, answers, questions_target, answers_target, batch_seqlen
+        add_padding(questions, padding_size)
+        add_padding(answers, padding_size)
+        add_padding(questions_target, padding_size)
+        add_padding(answers_target, padding_size)
+        return questions, answers, questions_target, answers_target, batch_seq_len
