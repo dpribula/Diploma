@@ -1,4 +1,7 @@
 from __future__ import print_function, division
+from comet_ml import Experiment
+from comet_ml import Optimizer
+
 from math import sqrt
 from sklearn import metrics
 from scipy.stats.stats import pearsonr
@@ -9,20 +12,31 @@ import data_helper
 import output_writer
 import graph_helper
 import evaluation_helper
+# Import comet_ml in the top of your file
 
-# Limiting number of student for performance
+LOG_COMET = False
+# Limiting number of student for performance during testing
 STUDENTS_COUNT_MAX = 3000
 BATCH_SIZE = 10
+
+# TODO fix if there is less data then STUDENTS_COUNT_MAX
 NUM_BATCHES = STUDENTS_COUNT_MAX // BATCH_SIZE
 TIMESTAMP = str(datetime.datetime.now())
 
 assert(STUDENTS_COUNT_MAX % BATCH_SIZE == 0)
 
-### DEBUG
+
+# Create an experiment with your api key
+if LOG_COMET:
+    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
+    optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
+
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 test_path = "/home/dave/projects/diploma/datasets/world_test.csv"
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 train_path = "/home/dave/projects/diploma/datasets/world_train.csv"
+train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
+test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
 
 num_steps = 0
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
@@ -32,16 +46,25 @@ num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
 print(train_set.max_seq_len)
 print(test_set.max_seq_len)
 
-num_epochs = 1000
+num_epochs = 30
 state_size = 100 # number of hidden neurons
 # TODO get this from dataset
 num_classes = max(train_set.num_questions, test_set.num_questions) + 1  # number of classes
 
 print(NUM_BATCHES)
-learning_rate = 10
+learning_rate = 100
 # TODO think if needed --> if not delete
 num_skills = num_classes
-    
+
+# COMET hyperparams
+if LOG_COMET:
+    params = """ 
+    learning_rate real [0, 100] [10]
+    state_size integer [2,500] [100]
+    """
+    optimizer.set_params(params)
+    hyper_params = {"learning_rate": learning_rate, "epochs": num_epochs, "batch_size": BATCH_SIZE, "state_size": state_size}
+    experiment.log_multiple_params(hyper_params)
 ##########
 #  MODEL
 ##########
@@ -87,6 +110,7 @@ losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=l
 total_loss = tf.reduce_mean(losses)
 train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
 
+#experiment.set_model_graph()
 # ##### END OF MODEL
 
 graph_loss = []
@@ -120,21 +144,18 @@ def run_train():
         output_writer.output_visualization('visualization/data.txt',
                                            batch_target_X, batch_target_Y, batch_seq, _predictions_series, step)
 
-
-
         # EVALUATION
         if step + 1 >= NUM_BATCHES:
             rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
             auc = evaluation_helper.auc(correct_labels, prediction_labels)
             pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
             accurracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
-            #pearson = pearson * pearson
 
             loss_list.append(_total_loss)
             graph_loss.append(_total_loss)
             graph_rmse_train.append(rmse)
             print("Step", step, "Loss", _total_loss)
-            print("Epoch train RMSE is: ", rmse)
+            print("RMSE is: ", rmse)
             print("AUC is: ", auc)
             print("Accuracy is: ", accurracy)
             print("Pearson coef is:", pearson)
@@ -144,12 +165,14 @@ def run_train():
                                             correct_labels)
 
 
+
 def run_test():
     print("--------------------------------")
     print("Calculating test set predictions")
     questions = []
     prediction_labels = []
     correct_labels = []
+
     # TODO MAKE TO WORK IN GENERAL
     for i in range(NUM_BATCHES // 10):
         test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
@@ -166,8 +189,8 @@ def run_test():
         output_writer.output_visualization('visualization/test_data.txt',
                                            test_batch_target_X, test_batch_target_Y, test_batch_seq, test_predictions, i)
         with open('results/results_test' + str(i) + '.txt', 'a') as f:
-            rmse_test = sqrt(metrics.mean_squared_error(prediction_labels, correct_labels))
-            auc_test = metrics.roc_auc_score(correct_labels, prediction_labels)
+            rmse_test = evaluation_helper.rmse(prediction_labels, correct_labels)
+            auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
             f.write("Epoch test RMSE is: %.3f \n" % rmse_test)
             f.write("Epoch test AUC is: %.3f \n\n" % auc_test)
             f.write("-------------------------------------------------------------------------------------- \n")
@@ -178,6 +201,12 @@ def run_test():
     auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
     pearson_test = evaluation_helper.pearson(correct_labels, prediction_labels)
     accurracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
+
+    if LOG_COMET:
+        experiment.log_metric("rmse", rmse_test)
+        experiment.log_metric("auc", auc_test)
+        experiment.log_metric("pearson", pearson_test)
+        experiment.log_metric("accuracy", accurracy_test)
 
     graph_rmse_test.append(rmse_test)
     with open('results/results_test' + TIMESTAMP + '.txt', 'a') as f:
@@ -193,21 +222,32 @@ def run_test():
     print("--------------------------------")
     output_writer.output_predictions('results/predictions_test' + TIMESTAMP + '.txt', questions, prediction_labels,
                                      correct_labels)
+    return rmse_test, auc_test, pearson_test, accurracy_test
 
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     loss_list = []
-
+    #while True:
+    if LOG_COMET:
+        suggestion = optimizer.get_suggestion()
+        experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
     #
     # Training
     #
     for epoch_idx in range(num_epochs):
-        run_train()
+        if LOG_COMET:
+            experiment.set_step(epoch_idx)
 
+        run_train()
         ###
         ### TESTING DATASET
         ###
-        run_test()
+        rmse, auc, pearson, accuracy = run_test()
+
+    if LOG_COMET:
+        suggestion.report_score("auc", auc)
+        suggestion.report_score("rmse", rmse)
+
 
 graph_helper.show_graph(graph_rmse_train, graph_rmse_test)

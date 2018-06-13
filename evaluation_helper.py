@@ -1,6 +1,6 @@
 from sklearn import metrics
-from scipy.stats.stats import pearsonr
 from math import sqrt
+
 
 def get_questions(batch_questions):
     questions = []
@@ -8,7 +8,7 @@ def get_questions(batch_questions):
         questions.extend(question)
     return questions
 
-# TODO this is probably wrong
+
 def get_predictions(predictions_series, questions):
     pred_labels = []
     pred_labels_without0 = []
@@ -21,7 +21,7 @@ def get_predictions(predictions_series, questions):
             j += 1
         i += 1
     for i in range(len(pred_labels)):
-        #CUTTING PADDING
+        # CUTTING PADDING
         if questions[i] != 0:
             pred_labels_without0.append(pred_labels[i])
 
@@ -34,7 +34,7 @@ def get_labels(labels, questions):
     for label in labels:
         correct_labels.extend(label)
     for i in range(len(correct_labels)):
-        #CUTTING PADDING
+        # CUTTING PADDING
         if questions[i] != 0:
             correct_labels_without0.append(correct_labels[i])  
     return correct_labels_without0
@@ -49,7 +49,7 @@ def auc(correct, predictions):
 
 
 def pearson(correct, predictions):
-    return pearsonr(correct, predictions)
+    return metrics.r2_score(correct, predictions)
 
 
 def accuracy(correct, predictions):
@@ -68,6 +68,7 @@ def accuracy(correct, predictions):
             correct_count += 1
         elif correct[i] == 0 and predictions[i] < 0.5:
             correct_count += 1
+
     print("Correct 0  ", correct_0)
     print("Correct 1  ", correct_1)
     print("Predictions > 0.5  ", prediction_over)

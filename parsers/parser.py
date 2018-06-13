@@ -28,7 +28,7 @@ def main():
             users[row['user']][0] = [row['place_asked']]
             users[row['user']][1] = [1 if (row['place_answered'] == row['place_asked']) else 0]
             user_count += 1
-        elif len(users[row['user']][0]) < 100:
+        elif len(users[row['user']][0]) < 100000:
             users[row['user']][0] += [row['place_asked']]
             users[row['user']][1] += [1 if (row['place_answered'] == row['place_asked']) else 0]
         max_question = max(max_question, int(row['place_asked']))

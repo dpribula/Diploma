@@ -2,7 +2,7 @@ import csv
 import numpy as np
 
 PROBABILITY = 50
-STUDENTS = 10000
+STUDENTS = 1000
 def generate_list():
     temp_list = []
     for i in range(0,20):

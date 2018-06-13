@@ -29,7 +29,7 @@ def read_dataset(path, max_count, batch_size, test_set):
             break
         if count*5 >= max_count*3 and test_set:
             break
-    # data, labels, seq_len = shuffle(data, labels, seq_len)
+    data, labels, seq_len = shuffle(data, labels, seq_len)
     print("Max dataset sequence: ", max_length)
     print("Max question id: ", num_questions)
     print("Dataset count: ", len(data))

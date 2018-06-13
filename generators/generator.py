@@ -3,8 +3,8 @@ train_data = []
 test_data = [[],[]]
 length = 20
 question_list = [i for i in range(0, length)]
-answer_list = [i%2 for i in range(0, length)]
-student_count = 1000
+answer_list = [1 for i in range(0, length)]
+student_count = 100
 for i in range(0, student_count):
     train_data.insert(i,[[],[]])
     train_data[i][0]= question_list     
