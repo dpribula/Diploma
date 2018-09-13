@@ -52,6 +52,19 @@ def add_padding(data, length):
             entry.append(int(0))
 
 
+# def createData(max_length):
+#     data = []
+#     labels = []
+#     seq_len = []
+#     max_length = 0
+#     num_questions = 0
+#
+#     data.append(1)
+#     labels.append(53)
+#     seq_len.append(1)
+#     return data, labels, seq_len, max_length - 1,
+
+
 class SlepeMapyData(object):
     def __init__(self,path, max_count, batch_size, test_set):
         self.data, self.labels, self.seqlen, self.max_seq_len , self.num_questions = read_dataset(path, max_count, batch_size, test_set)

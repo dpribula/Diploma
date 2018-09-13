@@ -1,4 +1,7 @@
 from __future__ import print_function, division
+
+import os
+
 from comet_ml import Experiment
 from comet_ml import Optimizer
 
@@ -15,6 +18,8 @@ import evaluation_helper
 # Import comet_ml in the top of your file
 
 LOG_COMET = False
+# if we have pre trained model already
+RESTORE_MODEL = True
 # Limiting number of student for performance during testing
 STUDENTS_COUNT_MAX = 3000
 BATCH_SIZE = 10
@@ -31,12 +36,12 @@ if LOG_COMET:
     experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
     optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
 
-test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
-test_path = "/home/dave/projects/diploma/datasets/world_test.csv"
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
-train_path = "/home/dave/projects/diploma/datasets/world_train.csv"
 train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
 test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
+test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+train_path = "/home/dave/projects/diploma/datasets/world_train.csv"
+test_path = "/home/dave/projects/diploma/datasets/world_test.csv"
 
 num_steps = 0
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
@@ -46,7 +51,7 @@ num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
 print(train_set.max_seq_len)
 print(test_set.max_seq_len)
 
-num_epochs = 30
+num_epochs = 5
 state_size = 100 # number of hidden neurons
 # TODO get this from dataset
 num_classes = max(train_set.num_questions, test_set.num_questions) + 1  # number of classes
@@ -225,8 +230,14 @@ def run_test():
     return rmse_test, auc_test, pearson_test, accurracy_test
 
 
+saver = tf.train.Saver()
+
 with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
+    if RESTORE_MODEL:
+        saver.restore(sess, "/home/dave/projects/savedNetwork/model.ckpt")
+    else:
+        sess.run(tf.global_variables_initializer())
+
     loss_list = []
     #while True:
     if LOG_COMET:
@@ -239,15 +250,27 @@ with tf.Session() as sess:
         if LOG_COMET:
             experiment.set_step(epoch_idx)
 
+        ###
+        ### TRAINING DATASET
+        ###
         run_train()
+
         ###
         ### TESTING DATASET
         ###
         rmse, auc, pearson, accuracy = run_test()
 
+    ###
+    ### LOGGING RESULTS
+    ###
     if LOG_COMET:
         suggestion.report_score("auc", auc)
         suggestion.report_score("rmse", rmse)
 
+    saver_path = saver.save(sess, "/home/dave/projects/savedNetwork/model.ckpt")
+    print("Model was saved into ", saver_path)
 
+###
+### SHOWING GRAPH
+###
 graph_helper.show_graph(graph_rmse_train, graph_rmse_test)
