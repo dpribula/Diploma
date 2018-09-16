@@ -7,6 +7,7 @@ import tensorflow as tf
 import datetime
 
 import data_helper
+import nn_model
 import output_writer
 import graph_helper
 import evaluation_helper
@@ -14,13 +15,13 @@ import evaluation_helper
 ### Params for running parts of the nn
 LOG_COMET = False
 RESTORE_MODEL = True
-RUN_TRAIN = False
+RUN_TRAIN = True
 RUN_TEST = True
 RUN_MAPS = True
 
 
 ### Params for nn
-STUDENTS_COUNT_MAX = 30000
+STUDENTS_COUNT_MAX = 3000
 BATCH_SIZE = 10
 # TODO fix if there is less data then STUDENTS_COUNT_MAX
 NUM_BATCHES = STUDENTS_COUNT_MAX // BATCH_SIZE
@@ -57,65 +58,65 @@ num_classes = max(train_set.num_questions, test_set.num_questions) + 1  # number
 print(NUM_BATCHES)
 # TODO think if needed --> if not delete
 num_skills = num_classes
-
-# COMET hyperparams
-if LOG_COMET:
-    params = """ 
-    learning_rate real [0, 100] [10]
-    state_size integer [2,500] [100]
-    """
-    optimizer.set_params(params)
-    hyper_params = {"learning_rate": learning_rate, "epochs": num_epochs, "batch_size": BATCH_SIZE, "state_size": state_size}
-    experiment.log_multiple_params(hyper_params)
-
-##########
-#  MODEL
-##########
-
-# PLACEHOLDERS
-x = tf.placeholder(tf.int32, [None, num_steps])
-y = tf.placeholder(tf.float32, [None, num_steps])
-seqlen = tf.placeholder(tf.int32, [None])
-target_x = tf.placeholder(tf.int32, [None, num_steps])
-target_y = tf.placeholder(tf.float32, [None, num_steps])
+# # COMET hyperparams
+# if LOG_COMET:
+#     params = """
+#     learning_rate real [0, 100] [10]
+#     state_size integer [2,500] [100]
+#     """
+#     optimizer.set_params(params)
+#     hyper_params = {"learning_rate": learning_rate, "epochs": num_epochs, "batch_size": BATCH_SIZE, "state_size": state_size}
+#     experiment.log_multiple_params(hyper_params)
 #
-# SHAPING OF DATA
+# ##########
+# #  MODEL
+# ##########
 #
-inputs_series = tf.split(x, num_steps, 1)
-target_label_s = tf.reshape(target_y, [-1, num_steps, 1])
-target_label_s = tf.tile(target_label_s, [1, 1, num_classes])
-target_one_hot = tf.one_hot(target_x, num_skills)
-rnn_inputs = tf.one_hot(x, num_skills)
-y_2 = tf.reshape(y, [-1, num_steps, 1])
-rnn_inputs = tf.concat([rnn_inputs, y_2], axis=2)
-
-# labels_series = tf.unstack(target_x, axis=1)
-###
-### FORWARD PASS
-###
-cell = tf.nn.rnn_cell.BasicLSTMCell(state_size, state_is_tuple=True)
-# possible to add initial state initial_state=init_state
-output, current_state = tf.nn.dynamic_rnn(cell=cell, inputs=rnn_inputs, sequence_length=seqlen, dtype=tf.float32)
-# TODO embedding one how vector tf.nn.embedding lookup check possible improvements
-with tf.variable_scope('softmax'):
-    W = tf.get_variable('W', [state_size, num_classes])
-    b = tf.get_variable('b', [num_classes], initializer=tf.constant_initializer(0.0))
-
-logits = tf.reshape(tf.matmul(tf.reshape(output, [-1, state_size]), W) + b,
-            [-1, num_steps, num_classes])
-predictions_series = tf.sigmoid(logits)
-
-###
-### BACKPROPAGATION
-###
-target_label_s = target_label_s * target_one_hot
-logits = logits * target_one_hot
-losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=logits)
-total_loss = tf.reduce_mean(losses)
-train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
+# # PLACEHOLDERS
+# x = tf.placeholder(tf.int32, [None, num_steps])
+# y = tf.placeholder(tf.float32, [None, num_steps])
+# seqlen = tf.placeholder(tf.int32, [None])
+# target_x = tf.placeholder(tf.int32, [None, num_steps])
+# target_y = tf.placeholder(tf.float32, [None, num_steps])
+# #
+# # SHAPING OF DATA
+# #
+# inputs_series = tf.split(x, num_steps, 1)
+# target_label_s = tf.reshape(target_y, [-1, num_steps, 1])
+# target_label_s = tf.tile(target_label_s, [1, 1, num_classes])
+# target_one_hot = tf.one_hot(target_x, num_skills)
+# rnn_inputs = tf.one_hot(x, num_skills)
+# y_2 = tf.reshape(y, [-1, num_steps, 1])
+# rnn_inputs = tf.concat([rnn_inputs, y_2], axis=2)
+#
+# # labels_series = tf.unstack(target_x, axis=1)
+# ###
+# ### FORWARD PASS
+# ###
+# cell = tf.nn.rnn_cell.BasicLSTMCell(state_size, state_is_tuple=True)
+# # possible to add initial state initial_state=init_state
+# output, current_state = tf.nn.dynamic_rnn(cell=cell, inputs=rnn_inputs, sequence_length=seqlen, dtype=tf.float32)
+# # TODO embedding one how vector tf.nn.embedding lookup check possible improvements
+# with tf.variable_scope('softmax'):
+#     W = tf.get_variable('W', [state_size, num_classes])
+#     b = tf.get_variable('b', [num_classes], initializer=tf.constant_initializer(0.0))
+#
+# logits = tf.reshape(tf.matmul(tf.reshape(output, [-1, state_size]), W) + b,
+#             [-1, num_steps, num_classes])
+# predictions_series = tf.sigmoid(logits)
+#
+# ###
+# ### BACKPROPAGATION
+# ###
+# target_label_s = target_label_s * target_one_hot
+# logits = logits * target_one_hot
+# losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=logits)
+# total_loss = tf.reduce_mean(losses)
+# train_step = tf.train.AdagradOptimizer(learning_rate).minimize(total_loss)
 
 #experiment.set_model_graph()
 # ##### END OF MODEL
+
 
 
 graph_loss = []
@@ -123,7 +124,7 @@ graph_rmse_train = []
 graph_rmse_test = []
 
 
-def run_train():
+def run_train(model,sess):
     print("New data, epoch", epoch_idx)
     questions = []
     prediction_labels = []
@@ -131,15 +132,7 @@ def run_train():
     for step in range(NUM_BATCHES):
         batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq = train_set.next(BATCH_SIZE, num_steps)
 
-        _total_loss, _train_step, _predictions_series = sess.run(
-            [total_loss, train_step, predictions_series],
-            feed_dict={
-                x: batch_X,
-                y: batch_Y,
-                target_x: batch_target_X,
-                target_y: batch_target_Y,
-                seqlen: batch_seq
-            })
+        _total_loss, _train_step, _predictions_series = model.run_model_train(batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq, sess)
 
         questions = evaluation_helper.get_questions(batch_target_X)
         prediction_labels += evaluation_helper.get_predictions(_predictions_series, questions)
@@ -170,7 +163,7 @@ def run_train():
                                             correct_labels)
 
 
-def run_test():
+def run_test(model):
     print("--------------------------------")
     print("Calculating test set predictions")
     questions = []
@@ -180,11 +173,8 @@ def run_test():
     # TODO MAKE TO WORK IN GENERAL
     for i in range(NUM_BATCHES // 10):
         test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
-        # We do not need target as we are not learning on test dataset
-        test_predictions = sess.run(predictions_series,
-                                    feed_dict={x: test_batch_X,
-                                               y: test_batch_Y,
-                                               seqlen: test_batch_seq})
+
+        test_predictions = model.run_model_test(test_batch_X, test_batch_Y, test_batch_seq)
 
         questions = (evaluation_helper.get_questions(test_batch_target_X))
         prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
@@ -230,7 +220,7 @@ def run_test():
     return rmse_test, auc_test, pearson_test, accurracy_test
 
 
-def run_test_for_map():
+def run_test_for_map(model):
     print("--------------------------------")
     print("Calculating test set predictions")
     questions = []
@@ -240,11 +230,9 @@ def run_test_for_map():
     # TODO MAKE TO WORK IN GENERAL
     for i in range(NUM_BATCHES // 10):
         test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = data_helper.get_data_for_map()
-        # We do not need target as we are not learning on test dataset
-        test_predictions = sess.run(predictions_series,
-                                    feed_dict={x: test_batch_X,
-                                               y: test_batch_Y,
-                                               seqlen: test_batch_seq})
+
+        test_predictions = model.run_model_test(test_batch_X, test_batch_Y, test_batch_seq)
+
 
         questions = (evaluation_helper.get_questions(test_batch_target_X))
         prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
@@ -291,13 +279,9 @@ def run_test_for_map():
     return rmse_test, auc_test, pearson_test, accurracy_test
 
 
-saver = tf.train.Saver()
 
 with tf.Session() as sess:
-    if RESTORE_MODEL:
-        saver.restore(sess, "/home/dave/projects/savedNetwork/model.ckpt")
-    else:
-        sess.run(tf.global_variables_initializer())
+    model = nn_model.Model(num_classes, num_steps, sess, RESTORE_MODEL)
 
     loss_list = []
     #while True:
@@ -315,13 +299,13 @@ with tf.Session() as sess:
         ### TRAINING DATASET
         ###
         if RUN_TRAIN:
-            run_train()
+            run_train(model,sess)
 
         ###
         ### TESTING DATASET
         ###
         if RUN_TEST:
-            rmse, auc, pearson, accuracy = run_test()
+            rmse, auc, pearson, accuracy = run_test(model)
 
         # if RUN_MAPS:
         #     run_test_for_map()
@@ -333,8 +317,9 @@ with tf.Session() as sess:
         suggestion.report_score("auc", auc)
         suggestion.report_score("rmse", rmse)
 
-    saver_path = saver.save(sess, "/home/dave/projects/savedNetwork/model.ckpt")
-    print("Model was saved into ", saver_path)
+    model.save_model()
+
+
 
 ###
 ### SHOWING GRAPH
