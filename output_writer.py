@@ -1,4 +1,7 @@
 #
+import csv
+
+
 def output_results(path, step, loss, rmse, auc):
     with open(path, 'a') as file:
         file.write("Step %.2f Loss %.2f \n" % (step, loss))
@@ -23,16 +26,31 @@ def output_predictions(path, questions, pred_labels, correct_labels):
 def output_visualization(path, questions, answers, seq_len, predictions, batch_count):
     with open(path + str(batch_count), 'w') as file:
         count = 0
-        for sequence in questions:
+        for question in questions:
             for i in range(0, seq_len[count]):
-                file.write('%6d, ' % sequence[i])
+                file.write('%6d, ' % question[i])
             file.write('\n')
             for i in range(0, seq_len[count]):
                 file.write('%6d, ' % answers[count][i])
             file.write('\n')
             for i in range(0, seq_len[count]):
-                file.write('%5f, ' % predictions[count][i][sequence[i]])
+                file.write('%5f, ' % predictions[count][i][question[i]])
             file.write('\n\n')
             count += 1
 
+
+
+def output_for_map(path, questions, answers, seq_len, predictions):
+    map_data = csv.writer(open(path + 'something.csv', "w"), delimiter=';')
+    map_data.writerow(questions)
+    map_data2 = csv.writer(open(path + 'something2.csv', "w"), delimiter=';')
+
+    map_data2.writerow(["id", "prediction"])
+    #TODO make prediction for the length of array
+    length_of_input_array = 0
+    for i in range(0, 216):
+        temp = []
+        temp.append(i)
+        temp.append((predictions[0][length_of_input_array][i])*100)
+        map_data2.writerow(temp)
 

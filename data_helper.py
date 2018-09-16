@@ -52,17 +52,15 @@ def add_padding(data, length):
             entry.append(int(0))
 
 
-# def createData(max_length):
-#     data = []
-#     labels = []
-#     seq_len = []
-#     max_length = 0
-#     num_questions = 0
-#
-#     data.append(1)
-#     labels.append(53)
-#     seq_len.append(1)
-#     return data, labels, seq_len, max_length - 1,
+def get_data_for_map(data, batch_size, padding_size):
+    data = data
+    labels = []
+    seq_len = []
+
+    data.append(1)
+    labels.append(53)
+    seq_len.append(1)
+    return data, labels, seq_len, 10 - 1,
 
 
 class SlepeMapyData(object):
