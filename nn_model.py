@@ -4,7 +4,6 @@ from comet_ml import Experiment
 from comet_ml import Optimizer
 
 import tensorflow as tf
-import datetime
 
 LOG_COMET = False
 ### Params for nn
@@ -22,9 +21,8 @@ if LOG_COMET:
 
 class Model:
     def __init__(self, num_classes, steps, session, restore):
-        num_skills = num_classes
         num_steps = steps
-        print(num_skills)
+        print(num_classes)
         self.sess = session
 
         # PLACEHOLDERS
@@ -44,8 +42,8 @@ class Model:
         inputs_series = tf.split(self.x, num_steps, 1)
         target_label_s = tf.reshape(self.target_y, [-1, num_steps, 1])
         target_label_s = tf.tile(target_label_s, [1, 1, num_classes])
-        target_one_hot = tf.one_hot(self.target_x, num_skills)
-        rnn_inputs = tf.one_hot(self.x, num_skills)
+        target_one_hot = tf.one_hot(self.target_x, num_classes)
+        rnn_inputs = tf.one_hot(self.x, num_classes)
         y_2 = tf.reshape(self.y, [-1, num_steps, 1])
         rnn_inputs = tf.concat([rnn_inputs, y_2], axis=2)
 

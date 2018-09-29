@@ -9,18 +9,19 @@ def output_results(path, step, loss, rmse, auc):
         file.write("Epoch train AUC is %.2f \n" % auc)
         file.write("----------------------------------------------------------------------------------------------------------------- \n")
 
+
 def output_predictions(path, questions, pred_labels, correct_labels):
-    return 0
+    return
     #check if they have the same size
     # with open(path, 'w') as file:
     #     for i, _ in enumerate(correct_labels):
     #         if questions[i] != 0:
     #             file.write('%d. ' % i)
-    #             # file.write('%d. ' % i)
-    #             # file.write('question ID is: %d' % questions[i])
-    #             # file.write("pred:%.2f " % pred_labels[i])
-    #             # file.write("correct:%s" % correct_labels[i])
-    #             # file.write("\n")
+    #             file.write('%d. ' % i)
+    #             file.write('question ID is: %d' % questions[i])
+    #             file.write("pred:%.2f " % pred_labels[i])
+    #             file.write("correct:%s" % correct_labels[i])
+    #             file.write("\n")
 
 
 def output_visualization(path, questions, answers, seq_len, predictions, batch_count):
@@ -40,15 +41,16 @@ def output_visualization(path, questions, answers, seq_len, predictions, batch_c
 
 
 
-def output_for_map(path, questions, answers, seq_len, predictions):
+def output_for_map(path, questions, answers, seq_len, predictions,):
     map_data = csv.writer(open(path + 'something.csv', "w"), delimiter=';')
-    map_data.writerow(questions)
+    map_data.writerow(questions[0])
+    map_data.writerow(answers[0])
     map_data2 = csv.writer(open(path + 'something2.csv', "w"), delimiter=';')
 
     map_data2.writerow(["id", "prediction"])
-    #TODO make prediction for the length of array
-    length_of_input_array = 0
-    for i in range(0, 216):
+    #TODO make prediction for the length of arrayS
+    length_of_input_array = seq_len[0] - 1
+    for i in range(0, 225):
         temp = []
         temp.append(i)
         temp.append((predictions[0][length_of_input_array][i])*100)
