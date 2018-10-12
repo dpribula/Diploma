@@ -15,29 +15,35 @@ from maps import map_helper
 ### Params for running parts of the nn
 LOG_COMET = False
 RESTORE_MODEL = True
-RUN_TRAIN = True
+RUN_TRAIN = False
 RUN_TEST = True
 RUN_MAPS = False
 
 
 ### Params for nn setup
 STUDENTS_COUNT_MAX = 4800
-BATCH_SIZE = 10
 # TODO fix if there is less data then STUDENTS_COUNT_MAX
-NUM_BATCHES = STUDENTS_COUNT_MAX // BATCH_SIZE
 TIMESTAMP = str(datetime.datetime.now())
+STATE_SIZE = 100  # number of hidden neurons
+LEARNING_RATE = 100
+BATCH_SIZE = 10
 assert(STUDENTS_COUNT_MAX % BATCH_SIZE == 0)
+
 num_steps = 0
-num_epochs = 50
-state_size = 100 # number of hidden neurons
-learning_rate = 100
-
-
+num_epochs = 1
 
 # Create an experiment with your api key
 if LOG_COMET:
     experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
     optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
+    params = """  
+    learning_rate real [0, 100] [10] 
+    state_size integer [2,500] [100] 
+    """
+    optimizer.set_params(params)
+    hyper_params = {"learning_rate": LEARNING_RATE, "epochs": num_epochs, "batch_size": BATCH_SIZE,
+                    "state_size": STATE_SIZE}
+    experiment.log_multiple_params(hyper_params)
 
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
@@ -48,12 +54,16 @@ test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
 
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
 test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, True)
+num_batches_train =  len(train_set.questions) // BATCH_SIZE
+num_batches_test = len(test_set.questions) // BATCH_SIZE
+
 # TODO check padding as it will not work if test set has more data
 num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
 print(test_set.max_seq_len)
+train_test_set_ratio = len(train_set.questions) // len(test_set.questions)
 
 num_classes = max(train_set.num_questions, test_set.num_questions) + 1  # number of classes
-print(NUM_BATCHES)
+print(num_batches_train)
 
 graph_loss = []
 graph_rmse_train = []
@@ -65,7 +75,7 @@ def run_train(model,sess):
     questions = []
     prediction_labels = []
     correct_labels = []
-    for step in range(NUM_BATCHES):
+    for step in range(num_batches_train):
         batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq = train_set.next(BATCH_SIZE, num_steps)
 
         _total_loss, _train_step, _predictions_series = model.run_model_train(batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq, sess)
@@ -79,7 +89,7 @@ def run_train(model,sess):
                                            batch_target_X, batch_target_Y, batch_seq, _predictions_series, step)
 
         # EVALUATION
-        if step + 1 >= NUM_BATCHES:
+        if step + 1 >= num_batches_train:
             rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
             auc = evaluation_helper.auc(correct_labels, prediction_labels)
             pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
@@ -107,7 +117,7 @@ def run_test(model):
     correct_labels = []
 
     # TODO MAKE TO WORK IN GENERAL
-    for i in range(NUM_BATCHES // 10):
+    for i in range(num_batches_test):
         test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
 
         test_predictions = model.run_model_test(test_batch_X, test_batch_Y, test_batch_seq)
@@ -169,22 +179,23 @@ def run_maps(model):
                                      correct_labels)
     map_helper.get_map_from_data()
 
+
+
 with tf.Session() as sess:
 
     model = nn_model.Model(num_classes, num_steps, sess, RESTORE_MODEL)
     if RUN_MAPS:
         run_maps(model)
     loss_list = []
-    #while True:
-    if LOG_COMET:
-        suggestion = optimizer.get_suggestion()
-        experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
+
     #
     # Training
     #
     for epoch_idx in range(num_epochs):
         if LOG_COMET:
-            experiment.set_step(epoch_idx)
+            experiment.set_step(i)
+            suggestion = optimizer.get_suggestion()
+            i += 1
 
         ###
         ### TRAINING DATASET
@@ -202,12 +213,12 @@ with tf.Session() as sess:
         # if RUN_MAPS:
         #      run_test_for_map()
 
-    ###
-    ### LOGGING RESULTS
-    ###
-    if LOG_COMET:
-        suggestion.report_score("auc", auc)
-        suggestion.report_score("rmse", rmse)
+        ###
+        ### LOGGING RESULTS
+        ###
+        if LOG_COMET:
+            print("COMET LOG")
+            suggestion.report_score("rmse", rmse)
 
 
 
