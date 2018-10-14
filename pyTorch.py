@@ -20,7 +20,7 @@ batch_size = 10
 MAX_COUNT = 100000
 data = data_helper.SlepeMapyData(train_path, MAX_COUNT, batch_size, False)
 num_classes = data.num_questions + 1
-input_size = num_classes # num_classes
+input_size = num_classes + 1 # correct/incorrect
 hidden_size = 50
 num_layers = 1
 sequence_length = data.max_seq_len
@@ -43,15 +43,18 @@ class Model(nn.Module):
         return (torch.zeros(num_layers, self.batch_size, self.hidden_dim),
                 torch.zeros(num_layers, self.batch_size, self.hidden_dim))
 
-    def forward(self, questions, target, hidden):
+    def forward(self, questions, answers, target, hidden):
         # questions to Tensor
         questions = torch.tensor(questions)
         questions = torch.unsqueeze(questions, 2)
-        input_data = torch.Tensor(batch_size, sequence_length, input_size)
-        input_data.zero_()
-        input_data.scatter_(2, questions, 1)
-        input_data = input_data.view(self.batch_size, self.sequence_length, -1)
-        lstm_out, self.hidden = self.lstm(input_data, hidden)
+        x = torch.Tensor(batch_size, sequence_length, num_classes)
+        x.zero_()
+        x.scatter_(2, questions, 1)
+        answers = torch.tensor(answers, dtype=torch.double)
+        answers = torch.unsqueeze(answers, 2)
+        y = torch.cat((x, answers), 2)
+        y = y.view(self.batch_size, self.sequence_length, -1)
+        lstm_out, self.hidden = self.lstm(y, hidden)
         output = self.hidden2tag(lstm_out.view(batch_size, self.sequence_length, -1))
         return output, self.hidden
 
@@ -62,7 +65,7 @@ class Model(nn.Module):
         for i in range(100):
             questions, answers, questions_target, answers_target, batch_seq_len = data.next(batch_size, sequence_length)
 
-            tag_scores, hidden = model.forward(questions, questions_target, hidden)
+            tag_scores, hidden = model.forward(questions, answers, questions_target, hidden)
             target: List[int] = []
             for batch_num in range(len(questions_target)):
                 for seq_num, target_id in enumerate(questions_target[batch_num]):
@@ -95,7 +98,7 @@ class Model(nn.Module):
 
 
 model = Model(batch_size, hidden_size, input_size, sequence_length)
-optimizer = optim.Adam(model.parameters(), lr=0.1)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 
 for epoch in range(100):
     hidden = model.init_hidden()
