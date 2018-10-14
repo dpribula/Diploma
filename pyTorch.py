@@ -1,77 +1,105 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import data_helper
+import evaluation_helper
+import numpy as np
+from typing import List
+
+
 
 # Torch settings
 torch.manual_seed(1)
-#torch.set_default_tensor_type('torch.cuda.FloatTensor')
+torch.set_default_tensor_type('torch.cuda.DoubleTensor')
 
-# RNN PARAMETERS
-num_classes = 1
-input_size = num_classes
-hidden_size = num_classes
-batch_size = 1
-num_layers = 1
-sequence_length = 20
 # DATA INITIALIZATION
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
-data = data_helper.SlepeMapyData(train_path, 1000, batch_size, False)
+# RNN PARAMETERS
+batch_size = 10
+MAX_COUNT = 100000
+data = data_helper.SlepeMapyData(train_path, MAX_COUNT, batch_size, False)
+num_classes = data.num_questions + 1
+input_size = num_classes # num_classes
+hidden_size = 50
+num_layers = 1
+sequence_length = data.max_seq_len
 # MODEL
 
 
-class LSTM1(nn.Module):
+class Model(nn.Module):
     def __init__(self, batch_size, hidden_dim, input_size, sequence_length):
-        super(LSTM1, self).__init__()
+        super(Model, self).__init__()
         self.hidden_dim = hidden_dim
         self.batch_size = batch_size
         self.input_size = input_size
         self.sequence_length = sequence_length
         self.lstm = nn.LSTM(input_size, hidden_dim, batch_first=True)
 
-        # The linear layer that maps from hidden state space to tag space
+        self.hidden2tag = nn.Linear(hidden_dim, num_classes)
         self.hidden = self.init_hidden()
 
     def init_hidden(self):
-        # Before we've done anything, we dont have any hidden state.
-        # Refer to the Pytorch documentation to see exactly
-        # why they have this dimensionality.
-        # The axes semantics are (num_layers, minibatch_size, hidden_dim)
         return (torch.zeros(num_layers, self.batch_size, self.hidden_dim),
                 torch.zeros(num_layers, self.batch_size, self.hidden_dim))
 
-    def forward(self, questions):
+    def forward(self, questions, target, hidden):
         # questions to Tensor
-        questions = torch.Tensor(questions)
-        questions = questions.view(self.batch_size, self.sequence_length, -1)
-        lstm_out, self.hidden = self.lstm(questions, self.hidden)
-        # tag_space = self.hidden2tag(lstm_out.view(len(sentence), -1))
-        # tag_scores = F.log_softmax(tag_space, dim=1)
-        return lstm_out
+        questions = torch.tensor(questions)
+        questions = torch.unsqueeze(questions, 2)
+        input_data = torch.Tensor(batch_size, sequence_length, input_size)
+        input_data.zero_()
+        input_data.scatter_(2, questions, 1)
+        input_data = input_data.view(self.batch_size, self.sequence_length, -1)
+        lstm_out, self.hidden = self.lstm(input_data, hidden)
+        output = self.hidden2tag(lstm_out.view(batch_size, self.sequence_length, -1))
+        return output, self.hidden
+
+    def run_train(self, hidden):
+        #TODO make work in general
+        predictions = []
+        prediction_targets = []
+        for i in range(100):
+            questions, answers, questions_target, answers_target, batch_seq_len = data.next(batch_size, sequence_length)
+
+            tag_scores, hidden = model.forward(questions, questions_target, hidden)
+            target: List[int] = []
+            for batch_num in range(len(questions_target)):
+                for seq_num, target_id in enumerate(questions_target[batch_num]):
+                    target.append(batch_num * num_classes * sequence_length + seq_num * num_classes + int(target_id) )
+
+            targets = torch.tensor(target, dtype=torch.int64)
+            tag_scores = tag_scores.view(-1)
+            logits = torch.gather(tag_scores, 0, targets)
+            answers_target = torch.tensor(answers_target, dtype=torch.int64)
+            target_correctness = answers_target.view(-1)
+            target_correctness = torch.tensor(target_correctness, dtype=torch.double)
+            loss_function = nn.BCEWithLogitsLoss()
+            loss = loss_function(logits, target_correctness)
+            loss.backward(retain_graph=True)
+            #torch.nn.utils.clip_grad_norm_(model.parameters(), 20)
+            optimizer.step()
+            a = np.asarray(torch.sigmoid(logits).detach())
+            b = np.asarray(target_correctness)
+            predictions.append(a)
+            prediction_targets.append(b)
+
+        print("RMSE: ", evaluation_helper.rmse(prediction_targets, predictions))
+        return loss.item()
+
+    def run_test(self):
+        return
+
+    def save_model(self):
+        return
 
 
-model = LSTM1(batch_size, hidden_size, input_size, sequence_length)
-loss_function = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0)
-
-input = torch.randn(3, 5, requires_grad=True)
-target = torch.empty(3, dtype=torch.long).random_(5)
-output = loss_function(input, target)
+model = Model(batch_size, hidden_size, input_size, sequence_length)
+optimizer = optim.Adam(model.parameters(), lr=0.1)
 
 for epoch in range(100):
-    loss = 0
-    optimizer.zero_grad()
     hidden = model.init_hidden()
-    for questions, labels in zip(data.data, data.labels):
-        labels = torch.Tensor(labels)
-        labels = labels.view(1, 20)
-        labels = torch.empty(1, 1, dtype=torch.long).random_(5)
-        output = model(questions)
-        loss += loss_function(output, labels)
+    optimizer.zero_grad()
+    loss = model.run_train(hidden)
+    print(loss)
 
-    # add my data
-
-    loss.backward(retain_graph=True)
-    optimizer.step()
