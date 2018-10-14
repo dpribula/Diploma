@@ -1,4 +1,6 @@
 from sklearn.utils import shuffle
+
+
 #
 # Parsing dataset into data, labels and their lengths
 #
@@ -29,7 +31,14 @@ def read_dataset(path, max_count, batch_size, test_set):
             break
         if count*5 >= max_count*3 and test_set:
             break
-    questions, labels, seq_len = shuffle(questions, labels, seq_len)
+
+    offset = (count // 3) - ((count // 3) // batch_size) * batch_size
+    for i in range(offset):
+        questions.append([0])
+        labels.append([0])
+        seq_len.append([1])
+
+   # questions, labels, seq_len = shuffle(questions, labels, seq_len)
     print("Max dataset sequence: ", max_length)
     print("Max question id: ", num_questions)
     print("Dataset count: ", len(questions))
@@ -77,13 +86,16 @@ class SlepeMapyData(object):
     def __init__(self,path, max_count, batch_size, test_set):
         self.questions, self.labels, self.seqlen, self.max_seq_len , self.num_questions = read_dataset(path, max_count, batch_size, test_set)
         self.batch_id = 0
+
+
     def next(self, batch_size, padding_size):
         if self.batch_id == len(self.questions):
             self.batch_id = 0
+
         questions = (self.questions[self.batch_id:self.batch_id + batch_size])
         answers = (self.labels[self.batch_id:self.batch_id + batch_size])
         batch_seq_len = (self.seqlen[self.batch_id:self.batch_id + batch_size])
-        #TODO refactor
+
         questions_target = questions.copy()
         answers_target = answers.copy()
         for i in range(batch_size):
@@ -93,6 +105,7 @@ class SlepeMapyData(object):
             questions_target[i] = temp[1:]
             answers[i] = temp2[:-1]
             answers_target[i] = temp2[1:]
+
         self.batch_id = min(self.batch_id + batch_size, len(self.questions))
         add_padding(questions, padding_size)
         add_padding(answers, padding_size)
