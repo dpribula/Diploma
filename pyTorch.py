@@ -18,7 +18,7 @@ train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 # RNN PARAMETERS
 batch_size = 10
-MAX_COUNT = 100
+MAX_COUNT = 1000
 data = data_helper.SlepeMapyData(train_path, MAX_COUNT, batch_size, False)
 num_classes = data.num_questions + 1
 input_size = num_classes + 1 # correct/incorrect
@@ -27,6 +27,11 @@ num_layers = 1
 sequence_length = data.max_seq_len
 # MODEL
 
+def detach_hidden(h):
+    if isinstance(h, torch.Tensor):
+        return h.detach()
+    else:
+        return tuple(detach_hidden(v) for v in h)
 
 class Model(nn.Module):
     def __init__(self, batch_size, hidden_dim, input_size, sequence_length):
@@ -55,7 +60,7 @@ class Model(nn.Module):
         answers = torch.unsqueeze(answers, 2)
         y = torch.cat((x, answers), 2)
         y = y.view(self.batch_size, self.sequence_length, -1)
-        lstm_out, self.hidden = self.lstm(y, self.hidden)
+        lstm_out, self.hidden = self.lstm(y, hidden)
         output = self.hidden2tag(lstm_out.view(batch_size, self.sequence_length, -1))
         return output, self.hidden
 
@@ -63,10 +68,16 @@ class Model(nn.Module):
         #TODO make work in general
         predictions = []
         prediction_targets = []
-        for i in range(10):
+        for i in range(100):
+            ### Forward pass
             questions, answers, questions_target, answers_target, batch_seq_len = data.next(batch_size, sequence_length)
-
+            optimizer.zero_grad()
+            ### Detach hidden layer from history so we don't backpropagate through every step
+            ### and reuse the same weights
+            hidden = detach_hidden(hidden)
             tag_scores, hidden = model.forward(questions, answers, questions_target, hidden)
+
+            ### Preparing data for backpropagation
             target: List[int] = []
             for batch_num in range(len(questions_target)):
                 for seq_num, target_id in enumerate(questions_target[batch_num]):
@@ -78,11 +89,16 @@ class Model(nn.Module):
             answers_target = torch.tensor(answers_target, dtype=torch.int64)
             target_correctness = answers_target.view(-1)
             target_correctness = torch.tensor(target_correctness, dtype=torch.float)
+
+            ### Backpropagation ###
             loss_function = nn.BCEWithLogitsLoss()
             loss = loss_function(logits, target_correctness)
-            loss.backward(retain_graph=True)
-            #torch.nn.utils.clip_grad_norm_(model.parameters(), 20)
+            loss.backward()
             optimizer.step()
+
+            #torch.nn.utils.clip_grad_norm_(model.parameters(), 20)
+
+            ### Predictions ###
             a = np.asarray(torch.sigmoid(logits).detach())
             b = np.asarray(target_correctness)
             predictions.append(a)
@@ -90,6 +106,8 @@ class Model(nn.Module):
 
         print("RMSE: ", evaluation_helper.rmse(prediction_targets, predictions))
         return loss.item()
+        return 0
+
 
     def run_test(self):
         return
@@ -103,7 +121,6 @@ optimizer = optim.Adam(model.parameters(), lr=0.01)
 
 for epoch in range(10):
     hidden = model.init_hidden()
-    optimizer.zero_grad()
     loss = model.run_train(hidden)
     print(loss)
 
