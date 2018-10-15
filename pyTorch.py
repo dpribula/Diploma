@@ -1,3 +1,4 @@
+import time
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,17 +8,17 @@ import numpy as np
 from typing import List
 
 
-
+start_time = time.time()
 # Torch settings
 torch.manual_seed(1)
-torch.set_default_tensor_type('torch.cuda.DoubleTensor')
+torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 # DATA INITIALIZATION
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 # RNN PARAMETERS
 batch_size = 10
-MAX_COUNT = 100000
+MAX_COUNT = 100
 data = data_helper.SlepeMapyData(train_path, MAX_COUNT, batch_size, False)
 num_classes = data.num_questions + 1
 input_size = num_classes + 1 # correct/incorrect
@@ -50,11 +51,11 @@ class Model(nn.Module):
         x = torch.Tensor(batch_size, sequence_length, num_classes)
         x.zero_()
         x.scatter_(2, questions, 1)
-        answers = torch.tensor(answers, dtype=torch.double)
+        answers = torch.tensor(answers, dtype=torch.float)
         answers = torch.unsqueeze(answers, 2)
         y = torch.cat((x, answers), 2)
         y = y.view(self.batch_size, self.sequence_length, -1)
-        lstm_out, self.hidden = self.lstm(y, hidden)
+        lstm_out, self.hidden = self.lstm(y, self.hidden)
         output = self.hidden2tag(lstm_out.view(batch_size, self.sequence_length, -1))
         return output, self.hidden
 
@@ -62,7 +63,7 @@ class Model(nn.Module):
         #TODO make work in general
         predictions = []
         prediction_targets = []
-        for i in range(100):
+        for i in range(10):
             questions, answers, questions_target, answers_target, batch_seq_len = data.next(batch_size, sequence_length)
 
             tag_scores, hidden = model.forward(questions, answers, questions_target, hidden)
@@ -76,7 +77,7 @@ class Model(nn.Module):
             logits = torch.gather(tag_scores, 0, targets)
             answers_target = torch.tensor(answers_target, dtype=torch.int64)
             target_correctness = answers_target.view(-1)
-            target_correctness = torch.tensor(target_correctness, dtype=torch.double)
+            target_correctness = torch.tensor(target_correctness, dtype=torch.float)
             loss_function = nn.BCEWithLogitsLoss()
             loss = loss_function(logits, target_correctness)
             loss.backward(retain_graph=True)
@@ -100,9 +101,12 @@ class Model(nn.Module):
 model = Model(batch_size, hidden_size, input_size, sequence_length)
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 
-for epoch in range(100):
+for epoch in range(10):
     hidden = model.init_hidden()
     optimizer.zero_grad()
     loss = model.run_train(hidden)
     print(loss)
 
+print("------------------------------")
+print("Time of the run was %s seconds" % (time.time() - start_time))
+print("------------------------------")
