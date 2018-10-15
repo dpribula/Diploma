@@ -7,7 +7,7 @@ import tensorflow as tf
 import datetime
 
 import data_helper
-import nn_model
+import nn_model_tensorflow
 import output_writer
 import evaluation_helper
 from maps import map_helper
@@ -15,22 +15,18 @@ from maps import map_helper
 ### Params for running parts of the nn
 LOG_COMET = False
 RESTORE_MODEL = True
-RUN_TRAIN = False
+RUN_TRAIN = True
 RUN_TEST = True
 RUN_MAPS = False
 
 
 ### Params for nn setup
 STUDENTS_COUNT_MAX = 4800
-# TODO fix if there is less data then STUDENTS_COUNT_MAX
 TIMESTAMP = str(datetime.datetime.now())
 STATE_SIZE = 100  # number of hidden neurons
-LEARNING_RATE = 100
+LEARNING_RATE = 1000
 BATCH_SIZE = 10
-assert(STUDENTS_COUNT_MAX % BATCH_SIZE == 0)
-
-num_steps = 0
-num_epochs = 1
+NUM_EPOCHS = 10
 
 # Create an experiment with your api key
 if LOG_COMET:
@@ -41,13 +37,13 @@ if LOG_COMET:
     state_size integer [2,500] [100] 
     """
     optimizer.set_params(params)
-    hyper_params = {"learning_rate": LEARNING_RATE, "epochs": num_epochs, "batch_size": BATCH_SIZE,
+    hyper_params = {"learning_rate": LEARNING_RATE, "epochs": NUM_EPOCHS, "batch_size": BATCH_SIZE,
                     "state_size": STATE_SIZE}
     experiment.log_multiple_params(hyper_params)
 
-train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
 test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
+train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
@@ -57,7 +53,6 @@ test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, 
 num_batches_train =  len(train_set.questions) // BATCH_SIZE
 num_batches_test = len(test_set.questions) // BATCH_SIZE
 
-# TODO check padding as it will not work if test set has more data
 num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
 print(test_set.max_seq_len)
 train_test_set_ratio = len(train_set.questions) // len(test_set.questions)
@@ -70,9 +65,8 @@ graph_rmse_train = []
 graph_rmse_test = []
 
 
-def run_train(model,sess):
+def run_train(model, sess):
     print("New data, epoch", epoch_idx)
-    questions = []
     prediction_labels = []
     correct_labels = []
     for step in range(num_batches_train):
@@ -118,17 +112,17 @@ def run_test(model):
 
     # TODO MAKE TO WORK IN GENERAL
     for i in range(num_batches_test):
-        test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
+        test_batch_x, test_batch_y, test_batch_target_x, test_batch_target_y, test_batch_seq = test_set.next(BATCH_SIZE, num_steps)
 
-        test_predictions = model.run_model_test(test_batch_X, test_batch_Y, test_batch_seq)
+        test_predictions = model.run_model_test(test_batch_x, test_batch_y, test_batch_seq)
 
-        questions = (evaluation_helper.get_questions(test_batch_target_X))
+        questions = (evaluation_helper.get_questions(test_batch_target_x))
         prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
-        correct_labels += (evaluation_helper.get_labels(test_batch_target_Y, questions))
+        correct_labels += (evaluation_helper.get_labels(test_batch_target_y, questions))
         # OUTPUT
         output_writer.output_visualization('visualization/test_data.txt',
-                                           test_batch_target_X, test_batch_target_Y, test_batch_seq, test_predictions, i)
-        output_writer.output_for_map('maps/nn_output/', test_batch_target_X, test_batch_target_Y, test_batch_seq, test_predictions)
+                                           test_batch_target_x, test_batch_target_y, test_batch_seq, test_predictions, i)
+        output_writer.output_for_map('maps/nn_output/', test_batch_target_x, test_batch_target_y, test_batch_seq, test_predictions)
         with open('results/results_test' + str(i) + '.txt', 'a') as f:
             rmse_test = evaluation_helper.rmse(prediction_labels, correct_labels)
             auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
@@ -141,13 +135,13 @@ def run_test(model):
     rmse_test = evaluation_helper.rmse(correct_labels, prediction_labels)
     auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
     pearson_test = evaluation_helper.pearson(correct_labels, prediction_labels)
-    accurracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
+    accuracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
 
     if LOG_COMET:
         experiment.log_metric("rmse", rmse_test)
         experiment.log_metric("auc", auc_test)
         experiment.log_metric("pearson", pearson_test)
-        experiment.log_metric("accuracy", accurracy_test)
+        experiment.log_metric("accuracy", accuracy_test)
 
     graph_rmse_test.append(rmse_test)
     with open('results/results_test' + TIMESTAMP + '.txt', 'a') as f:
@@ -158,12 +152,12 @@ def run_test(model):
     print("RMSE for test set:%.5f" % rmse_test)
     print("AUC for test set:%.5f" % auc_test)
     print("Pearson coef is:", pearson_test)
-    print("Accuracy is:", accurracy_test)
+    print("Accuracy is:", accuracy_test)
 
     print("--------------------------------")
     output_writer.output_predictions('results/predictions_test' + TIMESTAMP + '.txt', questions, prediction_labels,
                                      correct_labels)
-    return rmse_test, auc_test, pearson_test, accurracy_test
+    return rmse_test, auc_test, pearson_test, accuracy_test
 
 
 def run_maps(model):
@@ -183,7 +177,7 @@ def run_maps(model):
 
 with tf.Session() as sess:
 
-    model = nn_model.Model(num_classes, num_steps, sess, RESTORE_MODEL)
+    model = nn_model_tensorflow.Model(num_classes, num_steps, sess, RESTORE_MODEL)
     if RUN_MAPS:
         run_maps(model)
     loss_list = []
@@ -191,7 +185,8 @@ with tf.Session() as sess:
     #
     # Training
     #
-    for epoch_idx in range(num_epochs):
+    i = 0
+    for epoch_idx in range(NUM_EPOCHS):
         if LOG_COMET:
             experiment.set_step(i)
             suggestion = optimizer.get_suggestion()
