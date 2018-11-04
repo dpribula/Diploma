@@ -146,26 +146,8 @@ class Model(nn.Module):
                 optimizer.zero_grad()
                 tag_scores, hidden = model.forward(questions, answers, hidden)
 
-                ### Preparing data for backpropagation
-                target: List[int] = []
-                for batch_num in range(len(questions_target)):
-                    for seq_num, target_id in enumerate(questions_target[batch_num]):
-                        target.append(batch_num * num_classes * sequence_length + seq_num * num_classes + int(target_id))
-
-                targets = torch.tensor(target, dtype=torch.int64)
-                tag_scores2 = tag_scores.view(-1)
-                logits = torch.gather(tag_scores2, 0, targets)
                 answers_target = torch.tensor(answers_target, dtype=torch.int64)
-                target_correctness = answers_target.view(-1)
-                target_correctness = torch.tensor(target_correctness, dtype=torch.float)
 
-                ### Backpropagation ###
-                # loss_function = nn.BCEWithLogitsLoss()
-                # loss = loss_function(logits, target_correctness)
-                # loss.backward()
-                # optimizer.step()
-
-                # torch.nn.utils.clip_grad_norm_(model.parameters(), 20)
 
                 ### EVALUATION
                 questions = (evaluation_helper.get_questions(np.asarray(questions_target)))
