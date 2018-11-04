@@ -38,7 +38,7 @@ def read_dataset(path, max_count, batch_size, test_set):
         labels.append([0])
         seq_len.append([1])
 
-   # questions, labels, seq_len = shuffle(questions, labels, seq_len)
+    questions, labels, seq_len = shuffle(questions, labels, seq_len)
     print("Max dataset sequence: ", max_length)
     print("Max question id: ", num_questions)
     print("Dataset count: ", len(questions))

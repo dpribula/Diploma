@@ -7,6 +7,7 @@ import tensorflow as tf
 import datetime
 import time
 import data_helper
+import graph_helper
 import nn_model_tensorflow
 import output_writer
 import evaluation_helper
@@ -18,17 +19,17 @@ start_time = time.time()
 LOG_COMET = False
 RESTORE_MODEL = False
 RUN_TRAIN = True
-RUN_TEST = False
+RUN_TEST = True
 RUN_MAPS = False
 
 
 ### Params for nn setup
 STUDENTS_COUNT_MAX = 1000
 TIMESTAMP = str(datetime.datetime.now())
-STATE_SIZE = 100  # number of hidden neurons
+STATE_SIZE = 10  # number of hidden neurons
 LEARNING_RATE = 10
 BATCH_SIZE = 10
-NUM_EPOCHS = 10
+NUM_EPOCHS = 100
 
 # Create an experiment with your api key
 if LOG_COMET:
@@ -47,8 +48,8 @@ train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
 test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
-test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
 test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, True)
@@ -72,24 +73,26 @@ def run_train(model, sess):
     prediction_labels = []
     correct_labels = []
     for step in range(num_batches_train):
-        batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq = train_set.next(BATCH_SIZE, num_steps)
+        questions, answers, questions_target, answers_target, batch_seq = train_set.next(BATCH_SIZE, num_steps)
 
-        _total_loss, _train_step, _predictions_series = model.run_model_train(batch_X, batch_Y, batch_target_X, batch_target_Y, batch_seq, sess)
+        _total_loss, _train_step, _predictions_series = model.run_model_train(questions, answers, questions_target, answers_target, batch_seq, sess)
 
-        questions = evaluation_helper.get_questions(batch_target_X)
+        questions = evaluation_helper.get_questions(questions_target)
         prediction_labels += evaluation_helper.get_predictions(_predictions_series, questions)
-        correct_labels += evaluation_helper.get_labels(batch_target_Y, questions)
+        correct_labels += evaluation_helper.get_labels(answers_target, questions)
 
         # OUTPUT
         output_writer.output_visualization('visualization/data.txt',
-                                           batch_target_X, batch_target_Y, batch_seq, _predictions_series, step)
+                                           questions_target, answers_target, batch_seq, _predictions_series, step)
 
         # EVALUATION
         if step + 1 >= num_batches_train:
+            time1 = time.time()
             rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
             auc = evaluation_helper.auc(correct_labels, prediction_labels)
             pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
             accurracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
+            print("Time of the run was %s seconds" % (time.time() - time1))
 
             loss_list.append(_total_loss)
             graph_loss.append(_total_loss)
@@ -224,4 +227,4 @@ with tf.Session() as sess:
 ###
 ### SHOWING GRAPH
 ###
-#graph_helper.show_graph(graph_rmse_train, graph_rmse_test)
+graph_helper.show_graph(graph_rmse_train, graph_rmse_test)
