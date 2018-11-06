@@ -12,8 +12,8 @@ import graph_helper
 import evaluation_helper
 import random
 
-test_path = "/home/dave/projects/diploma/datasets/world_test.csv"
-train_path = "/home/dave/projects/diploma/datasets/world_train.csv"
+test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
+train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 
 STUDENTS_COUNT_MAX = 30000
 BATCH_SIZE = 10
@@ -27,7 +27,7 @@ def run_evaluation(questions, labels):
     prediction_labels = []
     for label in labels:
         correct_labels += label
-        prediction_labels += [random.uniform(0, 1) for _ in range(0, len(label))]
+        prediction_labels += [1 for _ in range(0, len(label))]
 
     rmse = sqrt(metrics.mean_squared_error(correct_labels, prediction_labels))
     auc = metrics.roc_auc_score(correct_labels, prediction_labels)
@@ -49,32 +49,23 @@ def run_evaluation_test(questions, labels):
     correct_labels = []
     prediction_labels = []
 
-    for i in range(30):
-        test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq =  test_set.next(BATCH_SIZE, 100)
-        correct_labels += (evaluation_helper.get_questions(test_batch_target_X))
-        #prediction_labels = (evaluation_helper.get_predictions(test_predictions, questions))
+    test_batch_X, test_batch_Y, test_batch_target_X, test_batch_target_Y, test_batch_seq =  test_set.next(BATCH_SIZE, 100)
+    correct_labels += (evaluation_helper.get_questions(test_batch_target_X))
 
 
-
-    rmse = sqrt(metrics.mean_squared_error(correct_labels, prediction_labels))
-    auc = metrics.roc_auc_score(correct_labels, prediction_labels)
-    fpr, tpr, thresholds = metrics.roc_curve(correct_labels, prediction_labels, pos_label=1)
-    auc2 = metrics.auc(fpr, tpr)
-    pearson = pearsonr(correct_labels, prediction_labels)
-    r2 = r2_score(correct_labels, prediction_labels)
+    rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
+    auc = evaluation_helper.auc(correct_labels, prediction_labels)
+    pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
     accuracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
-    # pearson = pearson * pearson
 
     print("RMSE is: ", rmse)
     print("AUC is: ", auc)
-    print("AUC is: ", auc2)
     print("Pearson coef is:", pearson)
-    print("Pearson coef is:", r2)
     print("Accuracy is:", accuracy)
 
 print("TRAIN SET\n")
-run_evaluation(train_set.data, train_set.labels)
+run_evaluation(train_set.questions, train_set.labels)
 
 print("TEST_SET")
-run_evaluation(test_set.data, test_set.labels)
+run_evaluation(test_set.questions, test_set.labels)
 
