@@ -23,7 +23,7 @@ HIDDEN_SIZE = 100
 
 # Create an experiment with your api key
 if LOG_COMET:
-    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
+    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy-test")
     optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
     params = """  
     learning_rate real [0.0001, 0.01] [0.001] 
@@ -140,17 +140,21 @@ class Model(nn.Module):
             correct_labels += (evaluation_helper.get_labels(np.asarray(answers_target), questions))
 
         # EVALUATION
-        rmse_test = evaluation_helper.rmse(correct_labels, prediction_labels)
-        auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
-        pearson_test = evaluation_helper.pearson(correct_labels, prediction_labels)
-        accuracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
+        rmse_train = evaluation_helper.rmse(correct_labels, prediction_labels)
+        auc_train = evaluation_helper.auc(correct_labels, prediction_labels)
+        pearson_train = evaluation_helper.pearson(correct_labels, prediction_labels)
+        accuracy_train = evaluation_helper.accuracy(correct_labels, prediction_labels)
         print("==========================TRAIN SET==========================")
-        print("RMSE for test set:%.5f" % rmse_test)
-        print("AUC for test set:%.5f" % auc_test)
-        print("Pearson coef is:", pearson_test)
-        print("Accuracy is:", accuracy_test)
-        print("======================================================================")
-        return rmse_test
+        evaluation_helper.print_results(rmse_train, auc_train, pearson_train, accuracy_train)
+
+        # Comet reporting
+        if LOG_COMET:
+            experiment.log_metric("rmse_train", rmse_train)
+            experiment.log_metric("auc_train", auc_train)
+            experiment.log_metric("pearson_train", pearson_train)
+            experiment.log_metric("accuracy_train", accuracy_train)
+
+        return rmse_train
 
     def run_test(self, hidden):
         with torch.no_grad():
@@ -181,18 +185,14 @@ class Model(nn.Module):
             pearson_test = evaluation_helper.pearson(correct_labels, prediction_labels)
             accuracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
             print("################ TEST SET ##################")
-            print("RMSE for test set:%.5f" % rmse_test)
-            print("AUC for test set:%.5f" % auc_test)
-            print("Pearson coef is:", pearson_test)
-            print("Accuracy is:", accuracy_test)
-            print("####################################################")
+            evaluation_helper.print_results(rmse_test, auc_test, pearson_test, accuracy_test)
 
             # Comet reporting
             if LOG_COMET:
-                experiment.log_metric("rmse", rmse_test)
-                experiment.log_metric("auc", auc_test)
-                experiment.log_metric("pearson", pearson_test)
-                experiment.log_metric("accuracy", accuracy_test)
+                experiment.log_metric("rmse_test", rmse_test)
+                experiment.log_metric("auc_test", auc_test)
+                experiment.log_metric("pearson_test", pearson_test)
+                experiment.log_metric("accuracy_test", accuracy_test)
 
 
             return rmse_test, prediction_labels
@@ -208,6 +208,10 @@ graph_rmse_train = []
 graph_rmse_test = []
 
 for epoch in range(NUM_EPOCHS):
+
+    if LOG_COMET:
+        experiment.set_step(epoch)
+
     hidden = model.init_hidden()
     rmse_train = model.run_train(hidden)
     hidden = model.init_hidden()
@@ -217,8 +221,7 @@ for epoch in range(NUM_EPOCHS):
         graph_rmse_train.append(rmse_train)
         graph_rmse_test.append(rmse_test)
 
-    if LOG_COMET:
-        experiment.set_step(epoch)
+
 
 
 if SHOW_GRAPH:

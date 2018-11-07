@@ -16,7 +16,7 @@ from maps import map_helper
 start_time = time.time()
 
 ### Params for running parts of the nn
-LOG_COMET = False
+LOG_COMET = True
 RESTORE_MODEL = False
 RUN_TRAIN = True
 RUN_TEST = True
@@ -24,16 +24,16 @@ RUN_MAPS = False
 
 
 ### Params for nn setup
-STUDENTS_COUNT_MAX = 1000
+STUDENTS_COUNT_MAX = 30000
 TIMESTAMP = str(datetime.datetime.now())
 STATE_SIZE = 10  # number of hidden neurons
 LEARNING_RATE = 10
-BATCH_SIZE = 10
+BATCH_SIZE = 100
 NUM_EPOCHS = 100
 
 # Create an experiment with your api key
 if LOG_COMET:
-    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
+    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy-test")
     optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
     params = """  
     learning_rate real [0, 100] [10] 
@@ -46,10 +46,10 @@ if LOG_COMET:
 
 train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
 test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
-train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
-test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
+train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
 test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, True)
@@ -91,7 +91,7 @@ def run_train(model, sess):
             rmse = evaluation_helper.rmse(correct_labels, prediction_labels)
             auc = evaluation_helper.auc(correct_labels, prediction_labels)
             pearson = evaluation_helper.pearson(correct_labels, prediction_labels)
-            accurracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
+            accuracy = evaluation_helper.accuracy(correct_labels, prediction_labels)
             print("Time of the run was %s seconds" % (time.time() - time1))
 
             loss_list.append(_total_loss)
@@ -100,12 +100,18 @@ def run_train(model, sess):
             print("Step", step, "Loss", _total_loss)
             print("RMSE is: ", rmse)
             print("AUC is: ", auc)
-            print("Accuracy is: ", accurracy)
+            print("Accuracy is: ", accuracy)
             print("Pearson coef is:", pearson)
 
             output_writer.output_results('results/results' + TIMESTAMP + '.txt', step, _total_loss, rmse, auc)
             output_writer.output_predictions('results/predictions_train.txt', questions, prediction_labels,
                                             correct_labels)
+
+            if LOG_COMET:
+                experiment.log_metric("rmse_train", rmse)
+                experiment.log_metric("auc_train", auc)
+                experiment.log_metric("pearson_train", pearson)
+                experiment.log_metric("accuracy_train", accuracy)
 
 
 def run_test(model):
@@ -143,10 +149,10 @@ def run_test(model):
     accuracy_test = evaluation_helper.accuracy(correct_labels, prediction_labels)
 
     if LOG_COMET:
-        experiment.log_metric("rmse", rmse_test)
-        experiment.log_metric("auc", auc_test)
-        experiment.log_metric("pearson", pearson_test)
-        experiment.log_metric("accuracy", accuracy_test)
+        experiment.log_metric("rmse_test", rmse_test)
+        experiment.log_metric("auc_test", auc_test)
+        experiment.log_metric("pearson_test", pearson_test)
+        experiment.log_metric("accuracy_test", accuracy_test)
 
     graph_rmse_test.append(rmse_test)
     with open('results/results_test' + TIMESTAMP + '.txt', 'a') as f:
@@ -190,18 +196,15 @@ with tf.Session() as sess:
     #
     # Training
     #
-    i = 0
     for epoch_idx in range(NUM_EPOCHS):
         if LOG_COMET:
-            experiment.set_step(i)
-            suggestion = optimizer.get_suggestion()
-            i += 1
+            experiment.set_step(epoch_idx)
 
         ###
         ### TRAINING DATASET
         ###
         if RUN_TRAIN:
-            run_train(model,sess)
+            run_train(model, sess)
             model.save_model()
 
         ###
@@ -216,9 +219,9 @@ with tf.Session() as sess:
         ###
         ### LOGGING RESULTS
         ###
-        if LOG_COMET:
-            print("COMET LOG")
-            suggestion.report_score("rmse", rmse)
+
+
+        file_writer = tf.summary.FileWriter('~', sess.graph)
 
     print("------------------------------")
     print("Time of the run was %s seconds" % (time.time() - start_time))
