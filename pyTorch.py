@@ -1,4 +1,6 @@
-import time
+from comet_ml import Experiment
+from comet_ml import Optimizer
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -10,27 +12,48 @@ from typing import List
 import graph_helper
 
 SHOW_GRAPH = True
+LOG_COMET = True
 
-start_time = time.time()
+## Neural net params
+LEARNING_RATE = 0.001
+BATCH_SIZE = 100
+DROPOUT = 0.5
+NUM_EPOCHS = 50
+HIDDEN_SIZE = 100
+
+# Create an experiment with your api key
+if LOG_COMET:
+    experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy")
+    optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
+    params = """  
+    learning_rate real [0.0001, 0.01] [0.001] 
+    state_size integer [10,500] [100] 
+    """
+    optimizer.set_params(params)
+    hyper_params = {"learning_rate": LEARNING_RATE, "epochs": NUM_EPOCHS, "batch_size": BATCH_SIZE,
+                    "state_size": HIDDEN_SIZE}
+    experiment.log_multiple_params(hyper_params)
+
 # Torch settings
 torch.manual_seed(1)
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 # DATA INITIALIZATION
-test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
-train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
 train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+train_path = "/home/dave/projects/diploma/datasets/simulated_train.csv"
+test_path = "/home/dave/projects/diploma/datasets/simulated_test.csv"
+test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
+train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 # RNN PARAMETERS
-batch_size = 10
-MAX_COUNT = 1000
-NUM_BATCH_TRAIN = MAX_COUNT // batch_size
-NUM_BATCH_TEST = MAX_COUNT // batch_size // 5
-train_data = data_helper.SlepeMapyData(train_path, MAX_COUNT, batch_size, False)
-test_data = data_helper.SlepeMapyData(test_path, MAX_COUNT//5, batch_size, False)
+
+MAX_COUNT = 30000
+NUM_BATCH_TRAIN = MAX_COUNT // BATCH_SIZE
+NUM_BATCH_TEST = MAX_COUNT // BATCH_SIZE // 5
+train_data = data_helper.SlepeMapyData(train_path, MAX_COUNT, BATCH_SIZE, False)
+test_data = data_helper.SlepeMapyData(test_path, MAX_COUNT // 5, BATCH_SIZE, False)
 num_classes = train_data.num_questions + 1
 input_size = num_classes + 1  # correct/incorrect or any other additional params
-hidden_size = 100
 num_layers = 1
 sequence_length = train_data.max_seq_len
 # MODEL
@@ -49,7 +72,7 @@ class Model(nn.Module):
         self.batch_size = batch_size
         self.input_size = input_size
         self.sequence_length = sequence_length
-        self.lstm = nn.LSTM(input_size, hidden_dim, batch_first=True)
+        self.lstm = nn.LSTM(input_size, hidden_dim, batch_first=True, dropout=DROPOUT)
 
         self.hidden2tag = nn.Linear(hidden_dim, num_classes)
         self.hidden = self.init_hidden()
@@ -62,27 +85,24 @@ class Model(nn.Module):
         # questions to Tensor
         questions = torch.tensor(questions)
         questions = torch.unsqueeze(questions, 2)
-        x = torch.Tensor(batch_size, sequence_length, num_classes)
+        x = torch.Tensor(BATCH_SIZE, sequence_length, num_classes)
         x.zero_()
         x.scatter_(2, questions, 1)
         answers = torch.tensor(answers, dtype=torch.float)
         answers = torch.unsqueeze(answers, 2)
         input_concatenation = torch.cat((x, answers), 2)
-        input_concatenation = input_concatenation.view(self.batch_size, self.sequence_length, -1)
+        input_concatenation = input_concatenation.view(self.batch_size, self.sequence_length , -1)
         lstm_out, self.hidden = self.lstm(input_concatenation, hidden)
         ### Not neccessity just to be sure to have exact dimensions
-        output = self.hidden2tag(lstm_out.view(batch_size, self.sequence_length, -1))
+        output = self.hidden2tag(lstm_out.view(BATCH_SIZE, self.sequence_length, -1))
         return output, self.hidden
 
     def run_train(self, hidden):
-        #TODO make work in general
-        predictions = []
-        prediction_targets = []
         prediction_labels = []
         correct_labels = []
         for i in range(NUM_BATCH_TRAIN):
             ### Forward pass
-            questions, answers, questions_target, answers_target, batch_seq_len = train_data.next(batch_size, sequence_length)
+            questions, answers, questions_target, answers_target, batch_seq_len = train_data.next(BATCH_SIZE, sequence_length)
             ### Detach hidden layer from history so we don't backpropagate through every step
             ### and reuse the same weights
             hidden = detach_hidden(hidden)
@@ -127,8 +147,8 @@ class Model(nn.Module):
         print("==========================TRAIN SET==========================")
         print("RMSE for test set:%.5f" % rmse_test)
         print("AUC for test set:%.5f" % auc_test)
-        # print("Pearson coef is:", pearson_test)
-        # print("Accuracy is:", accuracy_test)
+        print("Pearson coef is:", pearson_test)
+        print("Accuracy is:", accuracy_test)
         print("======================================================================")
         return rmse_test
 
@@ -139,7 +159,7 @@ class Model(nn.Module):
             correct_labels = []
             for i in range(NUM_BATCH_TEST):
                 ### Forward pass
-                questions, answers, questions_target, answers_target, batch_seq_len = test_data.next(batch_size, sequence_length)
+                questions, answers, questions_target, answers_target, batch_seq_len = test_data.next(BATCH_SIZE, sequence_length)
                 ### Detach hidden layer from history so we don't backpropagate through every step
                 ### and reuse the same weights
                 hidden = detach_hidden(hidden)
@@ -163,32 +183,43 @@ class Model(nn.Module):
             print("################ TEST SET ##################")
             print("RMSE for test set:%.5f" % rmse_test)
             print("AUC for test set:%.5f" % auc_test)
-            # print("Pearson coef is:", pearson_test)
-            # print("Accuracy is:", accuracy_test)
+            print("Pearson coef is:", pearson_test)
+            print("Accuracy is:", accuracy_test)
             print("####################################################")
-            return rmse_test
+
+            # Comet reporting
+            if LOG_COMET:
+                experiment.log_metric("rmse", rmse_test)
+                experiment.log_metric("auc", auc_test)
+                experiment.log_metric("pearson", pearson_test)
+                experiment.log_metric("accuracy", accuracy_test)
+
+
+            return rmse_test, prediction_labels
 
     def save_model(self):
         return
 
 
-model = Model(batch_size, hidden_size, input_size, sequence_length)
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+model = Model(BATCH_SIZE, HIDDEN_SIZE, input_size, sequence_length)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 graph_rmse_train = []
 graph_rmse_test = []
 
-for epoch in range(100):
+for epoch in range(NUM_EPOCHS):
     hidden = model.init_hidden()
     rmse_train = model.run_train(hidden)
     hidden = model.init_hidden()
-    rmse_test = model.run_test(hidden)
+    rmse_test, preds = model.run_test(hidden)
+
     if SHOW_GRAPH:
         graph_rmse_train.append(rmse_train)
         graph_rmse_test.append(rmse_test)
 
-print("------------------------------")
-print("Time of the run was %s seconds" % (time.time() - start_time))
-print("------------------------------")
+    if LOG_COMET:
+        experiment.set_step(epoch)
+
+
 if SHOW_GRAPH:
     graph_helper.show_graph(graph_rmse_train, graph_rmse_test)
