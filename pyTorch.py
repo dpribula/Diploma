@@ -47,11 +47,10 @@ test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 # RNN PARAMETERS
 
-MAX_COUNT = 30000
-NUM_BATCH_TRAIN = MAX_COUNT // BATCH_SIZE
-NUM_BATCH_TEST = MAX_COUNT // BATCH_SIZE // 5
 train_data = data_helper.SlepeMapyData(train_path, MAX_COUNT, BATCH_SIZE, False)
 test_data = data_helper.SlepeMapyData(test_path, MAX_COUNT // 5, BATCH_SIZE, False)
+num_batch_train = len(train_data.questions) // BATCH_SIZE
+num_batch_test = len(test_data.questions) // BATCH_SIZE
 num_classes = train_data.num_questions + 1
 input_size = num_classes + 1  # correct/incorrect or any other additional params
 num_layers = 1
