@@ -11,12 +11,25 @@ def read_dataset(path, max_count, batch_size, test_set):
     max_length = 0
     num_questions = 0
     file = open(path,'r')
+    num_lines_in_file = sum(1 for _ in file)
+    max_students = min(num_lines_in_file // 3, max_count)
+    max_students = max_students // batch_size * batch_size
+    max_lines_to_read = max_students * 3
+
     count = 0
+    file.seek(0)
     for line in file:
+        if line[len(line)-2] == ',':
+            line = line[:-2]
+
         line_data = line.split(",")
+
+
         max_length = max(max_length, len(line_data))
         if (count % 3) == 0:
             count += 1
+            continue
+        elif len(line_data) < 3:
             continue
         elif (count % 3) == 1:
             num_questions = max(num_questions, max(map(int, line_data)))
@@ -27,16 +40,12 @@ def read_dataset(path, max_count, batch_size, test_set):
             labels.append(list(map(int, line_data)))
             count += 1
             
-        if count >= max_count*3:
+        if count >= max_lines_to_read:
             break
-        if count*5 >= max_count*3 and test_set:
+        if count * 5 >= max_lines_to_read and test_set:
             break
 
-    offset = (count // 3) - ((count // 3) // batch_size) * batch_size
-    for i in range(offset):
-        questions.append([0])
-        labels.append([0])
-        seq_len.append([1])
+    file.close()
 
     questions, labels, seq_len = shuffle(questions, labels, seq_len)
     print("Max dataset sequence: ", max_length)
