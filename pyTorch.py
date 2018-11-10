@@ -15,11 +15,13 @@ SHOW_GRAPH = True
 LOG_COMET = True
 
 ## Neural net params
+MAX_COUNT = 30000
 LEARNING_RATE = 0.001
 BATCH_SIZE = 100
 DROPOUT = 0.5
 NUM_EPOCHS = 50
-HIDDEN_SIZE = 100
+HIDDEN_SIZE = 50
+num_layers = 2
 
 # Create an experiment with your api key
 if LOG_COMET:
