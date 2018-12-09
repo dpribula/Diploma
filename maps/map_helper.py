@@ -5,7 +5,7 @@ import pandas as pd
 import geopandas as gpd
 
 import evaluation_helper
-import nn_model
+import nn_model_tensorflow
 import data_helper
 import output_writer
 
@@ -26,19 +26,21 @@ def create_data_for_nn(input_answers, input_questions, length):
     return questions, answers, seq_len
 
 
-def run_data_on_nn(model, answer, question, seq_len):
+def run_data_on_nn(model, answer, question, seq_len, number):
     prediction_labels = []
     correct_labels = []
 
 
     test_predictions = model.run_model_test(question, answer, seq_len)
+    # print(question[0])
+    # print(answer[0])
     questions = (evaluation_helper.get_questions(question))
     prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
     correct_labels += (evaluation_helper.get_labels(answer, questions))
     # OUTPUT
     output_writer.output_for_map('maps/nn_output/', question, answer, seq_len,
-                                 test_predictions)
-    return questions, prediction_labels, correct_labels, test_predictions
+                                 test_predictions, number)
+    #return questions, prediction_labels, correct_labels, test_predictions
 
 
 def get_map_from_data():
@@ -56,12 +58,7 @@ def get_map_from_data():
     figsize = (16, 10)
     year = '2016'
     cols2 = ['Country Name', 'Country Code']
-    title = 'Individuals using the Internet (% of population) in {}'.format(year)
-    imgfile = 'img/{}.png'.format((title))  # here was slug
 
-    description = '''
-    Individuals who have used the Internet from any location in the last 3 months via any device based on the International Telecommunication Union,
-    World Telecommunication/ICT Development Report and database. Data: World Bank - worldbank.org • Author: Ramiro Gómez - ramiro.org'''.strip()
 
     gdf = gpd.read_file(shapefile)[['ADM0_A3', 'geometry']].to_crs('+proj=robin')
     gdf.sample(5)
@@ -85,6 +82,12 @@ def get_map_from_data():
     merged3.describe()
 
     prediction = "prediction"
-    ax = merged3.dropna().plot(column=prediction, cmap='OrRd', figsize=figsize, scheme='fisher_jenks', k=colors,
+    ax = merged3.dropna().plot(column=prediction, cmap='OrRd', figsize=figsize, scheme='equal_interval', k=colors,
                                legend=True)
+    plt.rcParams['axes.facecolor'] = 'blue'
+    ax.set_axis_off()
+    ax.set_xlim([-1.5e7, 1.7e7])
+    ax.get_legend().set_bbox_to_anchor((.12, .4))
+    ax.get_figure()
+
 

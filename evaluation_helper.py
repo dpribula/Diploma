@@ -76,3 +76,10 @@ def accuracy(correct, predictions):
     return correct_count/len(correct)
 
 
+def print_results(rmse, auc, pearson, accuracy):
+    print("RMSE for test set:%.5f" % rmse)
+    print("AUC for test set:%.5f" % auc)
+    print("Pearson coef is:", pearson)
+    print("Accuracy is:", accuracy)
+    print("####################################################")
+

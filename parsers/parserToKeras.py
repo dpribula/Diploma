@@ -2,13 +2,13 @@ import csv
 import argparse
 import sys
 FLAGS = None
-TRAIN_LIMIT = 8000000
-ANSWER_LIMIT = 500000
+TRAIN_LIMIT = 80000000000
+ANSWER_LIMIT = 5000000000
 
 
 def main():
     testReader = csv.DictReader(
-        open('../datasets/answer.csv'), delimiter=';', fieldnames=['id', 'user', 'place_asked', 'place_answered', 'type'])
+        open('../datasets/matej_answer_europe.csv'), delimiter=';', fieldnames=['id', 'user', 'place_asked', 'place_answered', 'type'])
     user_count = -1
     answer_count = 0
     users = []
