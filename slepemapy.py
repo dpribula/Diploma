@@ -16,7 +16,7 @@ from maps import map_helper
 start_time = time.time()
 
 ### Params for running parts of the nn
-LOG_COMET = True
+LOG_COMET = False
 RESTORE_MODEL = False
 RUN_TRAIN = True
 RUN_TEST = True
@@ -26,10 +26,10 @@ RUN_MAPS = False
 ### Params for nn setup
 STUDENTS_COUNT_MAX = 30000
 TIMESTAMP = str(datetime.datetime.now())
-STATE_SIZE = 10  # number of hidden neurons
-LEARNING_RATE = 10
-BATCH_SIZE = 100
-NUM_EPOCHS = 100
+STATE_SIZE = 100  # number of hidden neurons
+LEARNING_RATE = 0.001
+BATCH_SIZE = 10
+NUM_EPOCHS = 50
 
 # Create an experiment with your api key
 if LOG_COMET:
@@ -39,21 +39,23 @@ if LOG_COMET:
     learning_rate real [0, 100] [10] 
     state_size integer [2,500] [100] 
     """
-    optimizer.set_params(params)
+    # optimizer.set_params(params)
     hyper_params = {"learning_rate": LEARNING_RATE, "epochs": NUM_EPOCHS, "batch_size": BATCH_SIZE,
                     "state_size": STATE_SIZE}
     experiment.log_multiple_params(hyper_params)
 
-train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
 test_path = "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_test.csv"
-train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+train_path= "/home/dave/projects/GoingDeeperWithDKT/data/0910_c_train.csv"
+test_path = "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_test.csv"
+train_path= "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_train.csv"
 test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 
 train_set = data_helper.SlepeMapyData(train_path, STUDENTS_COUNT_MAX, BATCH_SIZE, False)
 test_set = data_helper.SlepeMapyData(test_path, STUDENTS_COUNT_MAX, BATCH_SIZE, True)
-num_batches_train =  len(train_set.questions) // BATCH_SIZE
+num_batches_train = len(train_set.questions) // BATCH_SIZE
 num_batches_test = len(test_set.questions) // BATCH_SIZE
 
 num_steps = max(train_set.max_seq_len, test_set.max_seq_len) + 1
@@ -133,7 +135,7 @@ def run_test(model):
         # OUTPUT
         output_writer.output_visualization('visualization/test_data.txt',
                                            test_batch_target_x, test_batch_target_y, test_batch_seq, test_predictions, i)
-        output_writer.output_for_map('maps/nn_output/', test_batch_target_x, test_batch_target_y, test_batch_seq, test_predictions)
+        # output_writer.output_for_map('maps/nn_output/', test_batch_target_x, test_batch_target_y, test_batch_seq, test_predictions)
         with open('results/results_test' + str(i) + '.txt', 'a') as f:
             rmse_test = evaluation_helper.rmse(prediction_labels, correct_labels)
             auc_test = evaluation_helper.auc(correct_labels, prediction_labels)
@@ -171,26 +173,9 @@ def run_test(model):
     return rmse_test, auc_test, pearson_test, accuracy_test
 
 
-def run_maps(model):
-    questions = []
-    answers = []
-    for i in range(10):
-        questions.append(159)
-        answers.append(1)
-    ques, ans, seq_len = map_helper.create_data_for_nn(answers, questions, 0)
-
-    questions, prediction_labels, correct_labels, test_predictions = map_helper.run_data_on_nn(model, ans, ques, seq_len)
-    output_writer.output_predictions('results/predictions_test' + TIMESTAMP + '.txt', questions, prediction_labels,
-                                     correct_labels)
-    map_helper.get_map_from_data()
-
-
-
 with tf.Session() as sess:
 
     model = nn_model_tensorflow.Model(num_classes, num_steps, sess, RESTORE_MODEL)
-    if RUN_MAPS:
-        run_maps(model)
     loss_list = []
 
     #

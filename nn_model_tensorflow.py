@@ -8,9 +8,8 @@ import tensorflow as tf
 ### Params for nn
 from nn_model import nn_model
 
-num_epochs = 5
-state_size = 100 # number of hidden neurons
-learning_rate = 100
+state_size = 100
+learning_rate = 0.1
 
 
 class Model(nn_model):
@@ -64,7 +63,7 @@ class Model(nn_model):
         logits = logits * target_one_hot
         #TODO  check if loss function works properly
         losses = tf.nn.sigmoid_cross_entropy_with_logits(labels=target_label_s, logits=logits)
-        self.total_loss = tf.reduce_mean(losses)
+        self.total_loss = tf.reduce_sum(losses)
         self.train_step = tf.train.AdagradOptimizer(learning_rate).minimize(self.total_loss)
         self.saver = tf.train.Saver()
         if restore:

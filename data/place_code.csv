@@ -1,0 +1,1467 @@
+id;code;name;type;maps;country code
+1;us-al;Alabama;7;[195];
+2;us-az;Arizona;7;[195];
+3;us-ar;Arkansas;7;[195];
+4;us-ca;California;7;[195];
+5;us-co;Colorado;7;[195];
+6;us-ct;Connecticut;7;[195];
+7;us-de;Delaware;7;[195];
+8;us-fl;Florida;7;[195];
+9;us-ga;Georgia;7;[195];
+10;us-id;Idaho;7;[195];
+11;us-il;Illinois;7;[195];
+12;us-in;Indiana;7;[195];
+13;us-ia;Iowa;7;[195];
+14;us-ks;Kansas;7;[195];
+15;us-ky;Kentucky;7;[195];
+16;us-la;Louisiana;7;[195];
+17;us-me;Maine;7;[195];
+18;us-md;Maryland;7;[195];
+19;us-ma;Massachusetts;7;[195];
+20;us-mi;Michigan;7;[195];
+21;us-mn;Minnesota;7;[195];
+22;us-ms;Mississippi;7;[195];
+23;us-mo;Missouri;7;[195];
+24;us-mt;Montana;7;[195];
+25;us-ne;Nebraska;7;[195];
+26;us-nv;Nevada;7;[195];
+27;us-nh;New Hampshire;7;[195];
+28;us-nj;New Jersey;7;[195];
+29;us-nm;New Mexico;7;[195];
+30;us-ny;New York;7;[195];
+31;us-nc;North Carolina;7;[195];
+32;us-nd;North Dakota;7;[195];
+33;us-oh;Ohio;7;[195];
+34;us-ok;Oklahoma;7;[195];
+35;us-or;Oregon;7;[195];
+36;us-pa;Pennsylvania;7;[195];
+37;us-ri;Rhode Island;7;[195];
+38;us-sc;South Carolina;7;[195];
+39;us-sd;South Dakota;7;[195];
+40;us-tn;Tennessee;7;[195];
+41;us-tx;Texas;7;[195];
+42;us-ut;Utah;7;[195];
+43;us-vt;Vermont;7;[195];
+44;us-va;Virginia;7;[195];
+45;us-wa;Washington;7;[195];
+46;us-wv;West Virginia;7;[195];
+47;us-wi;Wisconsin;7;[195];
+48;us-wy;Wyoming;7;[195];
+51;al;Albania;1;[230];ALB
+54;af;Afghanistan;1;[231, 225];AFG
+56;dz;Algeria;1;[227, 225];DZA
+57;ao;Angola;1;[227, 225];AGO
+58;ar;Argentina;1;[228, 225];ARG
+59;am;Armenia;1;[231];ARM
+60;au;Australia;1;[232, 225];AUS
+61;az;Azerbaijan;1;[231];AZE
+62;bs;Bahamas;1;[229];BHS
+63;bd;Bangladesh;1;[231, 225];BGD
+64;be;Belgium;1;[230];BEL
+65;bz;Belize;1;[229];BLZ
+66;by;Belarus;1;[230, 225];BLR
+67;bj;Benin;1;[227];BEN
+68;bt;Bhutan;1;[231];BTN
+69;bo;Bolivia;1;[228, 225];BOL
+70;ba;Bosnia and Herzegovina;1;[230];BIH
+71;bw;Botswana;1;[227, 225];BWA
+72;br;Brazil;1;[228, 225];BRA
+73;bn;Brunei;1;[231];BRN
+74;bg;Bulgaria;1;[230];BGR
+75;bf;Burkina Faso;1;[227, 225];BFA
+76;bi;Burundi;1;[227];BDI
+77;td;Chad;1;[227, 225];TCD
+78;me;Montenegro;1;[230];MNE
+79;cz;Czech Rep.;1;[230];CZE
+80;cn;China;1;[231, 225];CHN
+81;dk;Denmark;1;[230];DNK
+82;cd;Dem. Rep. Congo;1;[227, 225];DMA
+83;do;Dominican Rep.;1;[229];DOM
+84;dj;Djibouti;1;[227];DJI
+85;eg;Egypt;1;[227, 225];EGY
+86;ec;Ecuador;1;[228, 225];ECU
+87;er;Eritrea;1;[227, 225];ERI
+88;ee;Estonia;1;[230];EST
+89;et;Ethiopia;1;[227, 225];ETH
+90;fk;Falkland Is.;1;[228];
+91;fj;Fiji;1;[232];FJI
+92;ph;Philippines;1;[231, 225];PHL
+93;fi;Finland;1;[230, 225];FIN
+94;fr;France;1;[230, 225];FRA
+95;tf;French Southern and Antarctic Lands;1;[];PYF
+96;ga;Gabon;1;[227, 225];GAB
+97;gm;Gambia;1;[227];GMB
+98;gh;Ghana;1;[227, 225];GHA
+99;gl;Greenland;1;[229, 225];GRL
+100;ge;Georgia;1;[231];GEO
+101;gt;Guatemala;1;[229];GTM
+102;gn;Guinea;1;[227, 225];GIN
+103;gw;Guinea-Bissau;1;[227];GNB
+104;gy;Guyana;1;[228, 225];GUY
+105;ht;Haiti;1;[229];HTI
+106;hn;Honduras;1;[229, 225];HND
+107;cl;Chile;1;[228, 225];CHL
+108;hr;Croatia;1;[230];HRV
+109;in;India;1;[231, 225];IND
+110;id;Indonesia;1;[231, 225];IDN
+111;iq;Iraq;1;[231, 225];IRQ
+112;ir;Iran;1;[231, 225];IRN
+113;ie;Ireland;1;[230];IRL
+114;is;Iceland;1;[230, 225];ISL
+115;it;Italy;1;[230, 225];ITA
+116;il;Israel;1;[231];ISR
+117;jm;Jamaica;1;[229];JAM
+118;jp;Japan;1;[231, 225];JPN
+119;ye;Yemen;1;[231, 225];YEM
+120;za;South Africa;1;[227, 225];ZAF
+121;kr;Korea;1;[231, 225];KOR
+122;ss;S. Sudan;1;[227, 225];SSD
+123;jo;Jordan;1;[231];JOR
+124;kh;Cambodia;1;[231, 225];KHM
+125;cm;Cameroon;1;[227, 225];CMR
+126;ca;Canada;1;[229, 225];CAN
+127;qa;Qatar;1;[231];QAT
+128;kz;Kazakhstan;1;[231, 225];KAZ
+129;ke;Kenya;1;[227, 225];KEN
+130;co;Colombia;1;[228, 225];COL
+131;cg;Congo;1;[227, 225];COD
+132;cr;Costa Rica;1;[229];CRI
+133;cu;Cuba;1;[229];CUB
+134;kw;Kuwait;1;[231];KWT
+135;cy;Kypr;1;[];CYP
+136;kg;Kyrgyzstan;1;[231, 225];KGZ
+137;la;Lao PDR;1;[231, 225];LAO
+138;ls;Lesotho;1;[227];LSO
+139;lb;Lebanon;1;[231];LBN
+140;lr;Liberia;1;[227];LBR
+141;ly;Libya;1;[227, 225];LBY
+142;lt;Lithuania;1;[230];LTU
+143;lv;Latvia;1;[230];LVA
+144;lu;Luxembourg;1;[230];LUX
+145;mg;Madagascar;1;[227, 225];MDG
+146;hu;Hungary;1;[230];HUN
+147;mk;Macedonia;1;[230];MKD
+148;my;Malaysia;1;[231, 225];MYS
+149;mw;Malawi;1;[227, 225];MWI
+150;ml;Mali;1;[227, 225];MLI
+151;ma;Morocco;1;[227, 225];MAR
+152;mr;Mauritania;1;[227, 225];MRT
+153;mx;Mexico;1;[229, 225];MEX
+154;md;Moldova;1;[230];MDA
+155;mn;Mongolia;1;[231, 225];MNG
+156;mz;Mozambique;1;[227, 225];MOZ
+157;mm;Myanmar;1;[231, 225];MMR
+158;na;Namibia;1;[227, 225];NAM
+159;de;Germany;1;[230, 225];DEU
+160;np;Nepal;1;[231, 225];NPL
+161;ne;Niger;1;[227, 225];NER
+162;ng;Nigeria;1;[227, 225];NGA
+163;ni;Nicaragua;1;[229, 225];NIC
+164;nl;Netherlands;1;[230];NLD
+165;no;Norway;1;[230, 225];NOR
+166;nc;New Caledonia;1;[232];NCL
+167;nz;New Zealand;1;[232, 225];NZL
+168;om;Oman;1;[231, 225];OMN
+169;pk;Pakistan;1;[231, 225];PAK
+170;ps;Palestine;1;[231];
+171;pa;Panama;1;[229];PAN
+172;pg;Papua New Guinea;1;[232, 225];PNG
+173;py;Paraguay;1;[228, 225];PRY
+174;pe;Peru;1;[228, 225];PER
+175;ci;Côte d'Ivoire;1;[227, 225];CIV
+176;pl;Poland;1;[230, 225];POL
+177;pr;Puerto Rico;1;[229];PEI
+178;pt;Portugal;1;[230];PRT
+179;at;Austria;1;[230];AUT
+180;gq;Eq. Guinea;1;[227];GNQ
+181;ro;Romania;1;[230, 225];ROU
+182;ru;Russia;1;[231, 230, 225];RUS
+183;rw;Rwanda;1;[227];RWA
+184;gr;Greece;1;[230, 225];GRC
+185;sv;El Salvador;1;[229];SLV
+186;sa;Saudi Arabia;1;[231, 225];SAU
+187;sn;Senegal;1;[227, 225];SEN
+188;kp;Dem. Rep. Korea;1;[231, 225];PPK
+189;sl;Sierra Leone;1;[227];SLE
+190;sk;Slovakia;1;[230];SVK
+191;si;Slovenia;1;[230];SVN
+192;so;Somalia;1;[227, 225];SOM
+193;ae;United Arab Emirates;1;[231];ARE
+194;gb;United Kingdom;1;[230, 225];GBR
+195;us;United States;1;[229, 225];USA
+196;rs;Serbia;1;[230];SRB
+197;cf;Central African Rep.;1;[227, 225];CAF
+198;sd;Sudan;1;[227, 225];SDN
+199;sr;Suriname;1;[228, 225];SUR
+200;sz;Swaziland;1;[227];SWZ
+201;sy;Syria;1;[231, 225];SYR
+202;sb;Solomon Is.;1;[232, 225];SLB
+203;es;Spain;1;[230, 225];SPA
+204;lk;Sri Lanka;1;[231];LKA
+205;se;Sweden;1;[230, 225];SWE
+206;ch;Switzerland;1;[230];CHE
+207;tj;Tajikistan;1;[231, 225];TJK
+208;tz;Tanzania;1;[227, 225];TZA
+209;th;Thailand;1;[231, 225];THA
+210;tw;Taiwan;1;[231];
+211;tg;Togo;1;[227];TGO
+212;tn;Tunisia;1;[227, 225];TUN
+213;tr;Turkey;1;[231, 225];TUR
+214;tm;Turkmenistan;1;[231, 225];TKM
+215;ug;Uganda;1;[227, 225];UGA
+216;ua;Ukraine;1;[230, 225];UKR
+217;uy;Uruguay;1;[228, 225];URY
+218;uz;Uzbekistan;1;[231, 225];UZB
+219;ve;Venezuela;1;[228, 225];VEN
+220;vn;Vietnam;1;[231, 225];VNM
+221;tl;Timor-Leste;1;[231];TLS
+222;zm;Zambia;1;[227, 225];ZMB
+223;eh;W. Sahara;1;[227, 225];SSF
+224;zw;Zimbabwe;1;[227, 225];ZWE
+225;world;World;3;[];
+227;africa;Africa;4;[];
+228;samerica;South America;4;[];
+229;namerica;North America;4;[];
+230;europe;Europe;4;[];
+231;asia;Asia;4;[];
+232;oceania;Australia and Oceania;4;[];
+234;xk;Kosovo;1;[230];
+235;xs;Somaliland;1;[227];
+236;cz-us;Ústecký;7;[79];
+237;cz-pl;Plzeňský;7;[79];
+238;cz-jm;Jihomoravský;7;[79];
+239;cz-zl;Zlínský;7;[79];
+240;cz-ol;Olomoucký;7;[79];
+241;cz-pa;Pardubický;7;[79];
+242;cz-ka;Karlovarský;7;[79];
+243;cz-jc;Jihočeský;7;[79];
+244;cz-vy;Vysočina;7;[79];
+245;cz-pr;Prague;7;[79];
+246;cz-st;Středočeský;7;[79];
+247;cz-li;Liberecký;7;[79];
+248;cz-kr;Královéhradecký;7;[79];
+249;cz-mo;Moravskoslezský;7;[79];
+250;de-nw;Nordrhein-Westfalen;7;[159];
+251;de-bw;Baden-Württemberg;7;[159];
+252;de-he;Hessen;7;[159];
+253;de-hb;Bremen;7;[159];
+254;de-ni;Niedersachsen;7;[159];
+255;de-th;Thüringen;7;[159];
+256;de-hh;Hamburg;7;[159];
+257;de-sh;Schleswig-Holstein;7;[159];
+258;de-rp;Rheinland-Pfalz;7;[159];
+259;de-sl;Saarland;7;[159];
+260;de-by;Bayern;7;[159];
+261;de-be;Berlin;7;[159];
+262;de-st;Sachsen-Anhalt;7;[159];
+263;de-sn;Sachsen;7;[159];
+264;de-bb;Brandenburg;7;[159];
+265;de-mv;Mecklenburg-Vorpommern;7;[159];
+266;at-vo;Vorarlberg;7;[179];
+267;at-bu;Burgenland;7;[179];
+268;at-st;Steiermark;7;[179];
+269;at-ka;Kärnten;7;[179];
+270;at-oo;Oberösterreich;7;[179];
+271;at-sz;Salzburg;7;[179];
+272;at-tr;Tirol;7;[179];
+273;at-no;Niederösterreich;7;[179];
+274;at-wi;Wien;7;[179];
+275;in-ch;Čhattísgarh;1;[];
+276;in-dl;Delhi;1;[109];
+277;in-hp;Himachal Pradesh;1;[109];
+278;in-hr;Haryana;1;[109];
+279;in-jk;Jammu and Kashmir;1;[109];
+280;in-ap;Andhra Pradesh;1;[109];
+281;in-kl;Kerala;1;[109];
+282;in-ld;Lakadivy / Lakšadvíp;1;[];
+283;in-or;Orissa;1;[109];
+284;in-dn;Dádra a Nagar-havéli;1;[];
+285;in-ka;Karnataka;1;[109];
+286;in-mh;Maharashtra;1;[109];
+287;in-an;Andamany a Nikobary;1;[];
+288;in-as;Assam;1;[109];
+289;in-mn;Manipur;1;[109];
+290;in-nl;Nagaland;1;[109];
+291;in-ml;Meghalaya;1;[109];
+292;in-pb;Punjab;1;[109];
+293;in-rj;Rajasthan;1;[109];
+294;in-up;Uttar Pradesh;1;[109];
+295;in-ut;Uttaranchal;1;[109];
+296;in-jh;Jharkhand;1;[109];
+297;in-wb;West Bengal;1;[109];
+298;in-br;Bihar;1;[109];
+299;in-sk;Sikkim;1;[109];
+300;in-ct;Chhattisgarh;1;[109];
+301;in-mp;Madhya Pradesh;1;[109];
+302;in-py;Puttuččéri;1;[];
+303;in-tn;Tamil Nadu;1;[109];
+304;in-gj;Gujarat;1;[109];
+305;in-ga;Goa;1;[109];
+306;in-ar;Arunachal Pradesh;1;[109];
+307;in-mz;Mizoram;1;[109];
+308;in-tr;Tripura;1;[109];
+309;Daman and Diu;Damán a Díjú;1;[];
+310;cn-62;Gansu;7;[80];
+311;cn-63;Qinghai;7;[80];
+312;cn-45;Guangxi;7;[80];
+313;cn-52;Guizhou;7;[80];
+314;cn-50;Chongqing;7;[80];
+315;cn-11;Beijing;7;[80];
+316;cn-35;Paracel Islands;7;[80];
+317;cn-34;Anhui;7;[80];
+318;cn-44;Guangdong;7;[80];
+319;cn-54;Xizang;7;[80];
+320;cn-65;Xinjiang;7;[80];
+321;cn-46;Hainan;7;[80];
+322;cn-64;Ningxia;7;[80];
+323;cn-61;Shaanxi;7;[80];
+324;cn-14;Shanxi;7;[80];
+325;cn-42;Hubei;7;[80];
+326;cn-43;Hunan;7;[80];
+327;cn-51;Sichuan;7;[80];
+328;cn-53;Yunnan;7;[80];
+329;cn-13;Hebei;7;[80];
+330;cn-41;Henan;7;[80];
+331;cn-21;Liaoning;7;[80];
+332;cn-37;Shandong;7;[80];
+333;cn-12;Tianjin;7;[80];
+334;cn-36;Jiangxi;7;[80];
+335;cn-32;Jiangsu;7;[80];
+336;cn-31;Shanghai;7;[80];
+337;cn-33;Zhejiang;7;[80];
+338;cn-22;Jilin;7;[80];
+339;cn-15;Inner Mongol;7;[80];
+340;cn-23;Heilongjiang;7;[80];
+341;San_Marino;San Marino;2;[230];
+342;Vaduz;Vaduz;2;[230];
+343;Luxembourg;Luxembourg;2;[230];
+344;Monaco;Monaco;2;[230];
+345;Andorra;Andorra;2;[230];
+346;Ljubljana;Ljubljana;2;[230];
+347;Bratislava;Bratislava;2;[230, 190];
+348;Podgorica;Podgorica;2;[230];
+349;Bern;Bern;2;[230];
+350;Pristina;Pristina;2;[230];
+351;Skopje;Skopje;2;[230];
+352;Reykjavik;Reykjavík;2;[230];
+353;Chisinau;Chisinau;2;[230];
+354;Vilnius;Vilnius;2;[230];
+355;Riga;Riga;2;[230];
+356;Zagreb;Zagreb;2;[230];
+357;Tallinn;Tallinn;2;[230];
+358;Belgrade;Belgrade;2;[230];
+359;Tirana;Tirana;2;[230];
+360;Sofia;Sofia;2;[230];
+361;Minsk;Minsk;2;[230];
+362;Sarajevo;Sarajevo;2;[230];
+363;Budapest;Budapest;2;[230];
+364;Bucharest;Bucharest;2;[230];
+365;Lisbon;Lisbon;2;[230, 225];
+366;Oslo;Oslo;2;[230];
+367;Warsaw;Warsaw;2;[230];
+368;Dublin;Dublin;2;[230];
+369;Prague;Prague;2;[230];
+370;Helsinki;Helsinki;2;[230];
+371;Kobenhavn;København;2;[230];
+372;Brussels;Brussels;2;[230];
+373;Kiev;Kiev;2;[230, 225];
+374;Madrid;Madrid;2;[203, 230, 225];
+375;Geneva;Ženeva;2;[];
+376;Stockholm;Stockholm;2;[230];
+377;Amsterdam;Amsterdam;2;[230];
+378;Berlin;Berlin;2;[159, 230, 225];
+379;Athens;Athens;2;[230, 225];
+380;Vienna;Vienna;2;[179, 230, 225];
+381;London;London;2;[230, 194, 225];
+382;Moscow;Moscow;2;[230, 225];
+383;Rome;Rome;2;[230, 115, 225];
+384;Paris;Paris;2;[230, 94, 225];
+385;it-65;Abruzzo;7;[115];
+386;it-75;Apulia;7;[115];
+387;it-77;Basilicata;7;[115];
+388;it-78;Calabria;7;[115];
+389;it-72;Campania;7;[115];
+390;it-45;Emilia-Romagna;7;[115];
+391;it-36;Friuli-Venezia Giulia;7;[115];
+392;it-62;Lazio;7;[115];
+393;it-42;Liguria;7;[115];
+394;it-25;Lombardia;7;[115];
+395;it-57;Marche;7;[115];
+396;it-67;Molise;7;[115];
+397;it-21;Piemonte;7;[115];
+398;it-88;Sardegna;7;[115];
+399;it-82;Sicily;7;[115];
+400;it-52;Toscana;7;[115];
+401;it-32;Trentino-Alto Adige;7;[115];
+402;it-55;Umbria;7;[115];
+403;it-23;Valle d'Aosta;7;[115];
+404;it-34;Veneto;7;[115];
+405;fr-a;Alsace;7;[94];
+406;fr-b;Aquitaine;7;[94];
+407;fr-c;Auvergne;7;[94];
+408;fr-p;Basse-Normandie;7;[94];
+409;fr-d;Bourgogne;7;[94];
+410;fr-e;Bretagne;7;[94];
+411;fr-f;Centre;7;[94];
+412;fr-g;Champagne-Ardenne;7;[94];
+413;fr-h;Corse;7;[94];
+414;fr-i;Franche-Comté;7;[94];
+415;fr-q;Haute-Normandie;7;[94];
+416;fr-j;Île-de-France;7;[94];
+417;fr-k;Languedoc-Roussillon;7;[94];
+418;fr-l;Limousin;7;[94];
+419;fr-m;Lorraine;7;[94];
+420;fr-n;Midi-Pyrénées;7;[94];
+421;fr-o;Nord-Pas-de-Calais;7;[94];
+422;fr-r;Pays de la Loire;7;[94];
+423;fr-s;Picardie;7;[94];
+424;fr-t;Poitou-Charentes;7;[94];
+425;fr-u;Provence-Alpes-Côte-d'Azur;7;[94];
+426;fr-v;Rhône-Alpes;7;[94];
+427;es-an;Andalucía;7;[203];
+428;es-ar;Aragón;7;[203];
+429;es-cb;Cantabria;7;[203];
+430;es-cl;Castilla y León;7;[203];
+431;es-cm;Castilla-La Mancha;7;[203];
+432;es-ct;Cataluña;7;[203];
+433;es-md;Comunidad de Madrid;7;[203];
+434;es-na;Comunidad Foral de Navarra;7;[203];
+435;es-vc;Comunidad Valenciana;7;[203];
+436;es-ex;Extremadura;7;[203];
+437;es-ga;Galicia;7;[203];
+438;es-pm;Islas Baleares;7;[203];
+439;es-lo;La Rioja;7;[203];
+440;es-pv;País Vasco;7;[203];
+441;es-as;Principado de Asturias;7;[203];
+442;es-mu;Región de Murcia;7;[203];
+443;ca-mb;Manitoba;7;[126];
+444;ca-sk;Saskatchewan;7;[126];
+445;ca-ab;Alberta;7;[126];
+446;ca-bc;British Columbia;7;[126];
+447;ca-nu;Nunavut;7;[126];
+448;ca-nt;Northwest Territories;7;[126];
+449;ca-yt;Yukon;7;[126];
+450;ca-on;Ontario;7;[126];
+451;ca-qc;Québec;7;[126];
+452;ca-nb;New Brunswick;7;[126];
+453;ca-ns;Nova Scotia;7;[126];
+454;ca-nl;Newfoundland and Labrador;7;[126];
+455;ca-pe;Prince Edward Island;7;[126];
+456;au-nt;Northern Territory;1;[60];
+457;au-wa;Western Australia;1;[60];
+458;au-ct;Australian Capital Territory;1;[60];
+459;au-ns;New South Wales;1;[60];
+460;au-sa;South Australia;1;[60];
+461;au-vi;Victoria;1;[60];
+462;au-ql;Queensland;1;[60];
+463;au-ts;Tasmania;1;[60];
+464;Hardanger-vidda;Hardanger-vidda;8;[230];
+465;Bohmerwald;Böhmerwald;8;[230];
+466;Transylvanian_Alps;Transylvanian Alps;8;[230];
+467;Tatra_Mts.;Tatra Mts.;8;[230];
+468;Pindus_Mts.;Pindus Mts.;8;[230];
+469;Calabria;Calabria;8;[230];
+470;Harz;Harz;8;[230];
+471;Vosges;Vosges;8;[230];
+472;Sudetes_Mts.;Sudetes Mts.;8;[230];
+473;Erzgebirge;Erzgebirge;8;[230];
+474;Ardennes;Ardennes;8;[230];
+475;Jura;Jura;8;[230];
+476;Grampian_Mts.;Grampian Mts.;8;[230];
+477;Cambrian_Mts.;Cambrian Mts.;8;[230];
+478;Balkan_Mts.;Balkan Mts.;8;[230];
+479;Dinaric_Alps;Dinaric Alps;8;[230];
+480;Cord._Cantabrica;Cord. Cantábrica;8;[230];
+481;S._Nevada;S. Nevada;8;[230];
+482;Sierra_Morena;Sierra Morena;8;[230];
+483;KJLEN_MOUNTAINS;KJØLEN MOUNTAINS;8;[230];
+484;CARPATHIAN_MOUNTAINS;CARPATHIAN MOUNTAINS;8;[230];
+485;APPENNINI;APPENNINI;8;[230];
+486;PYRENEES;PYRENEES;8;[230];
+487;ALPS;ALPS;8;[230, 225];
+488;CAUCASUS_MTS.;CAUCASUS MTS.;8;[230, 225];
+489;Mesa;Mesa;2;[195];
+490;San_Mateo;San Mateo;2;[];
+491;Aurora;Aurora;2;[];
+492;Kansas_City;Kansas City;2;[195];
+493;Pasadena;Pasadena;2;[];
+494;Grand_Prairie;Arlington;2;[];
+495;Stamford;Stamford;2;[];
+496;Joliet;Joliet;2;[];
+497;Stockton;Stockton;2;[];
+498;Oceanside;Oceanside;2;[];
+499;Irvine;Irvine;2;[195];
+500;New_Haven;New Haven;2;[];
+501;Lowell;Lowell;2;[];
+502;Fort_Lauderdale;Fort Lauderdale;2;[195];
+503;Gary;Gary;2;[];
+504;Covington;Covington;2;[];
+505;Akron;Akron;2;[];
+506;Grand_Rapids;Grand Rapids;2;[];
+507;Tacoma;Tacoma;2;[];
+508;Long_Beach;Long Beach;2;[195];
+509;Hartford;Hartford;2;[];
+510;Providence;Providence;2;[195];
+511;Birmingham;Birmingham;2;[194, 195];
+512;St._Petersburg;St. Petersburg;2;[];
+513;Dayton;Dayton;2;[];
+514;Virginia_Beach;Virginia Beach;2;[195];
+515;Oakland;Oakland;2;[195];
+516;West_Palm_Beach;West Palm Beach;2;[195];
+517;Sarasota;Sarasota;2;[];
+518;Louisville;Louisville;2;[];
+519;Charlotte;Charlotte;2;[];
+520;Columbus;Columbus;2;[195];
+521;Albany;Albany;2;[];
+522;Harrisburg;Harrisburg;2;[];
+523;San_Bernardino;San Bernardino;2;[195];
+524;Bridgeport;Bridgeport;2;[195];
+525;Rochester;Rochester;2;[];
+526;Tucson;Tucson;2;[];
+527;Fresno;Fresno;2;[];
+528;Albuquerque;Albuquerque;2;[];
+529;Tulsa;Tulsa;2;[];
+530;Ft._Worth;Ft. Worth;2;[195];
+531;Austin;Austin;2;[195];
+532;El_Paso;El Paso;2;[];
+533;Orlando;Orlando;2;[195];
+534;Jacksonville;Jacksonville;2;[];
+535;Indianapolis;Indianapolis;2;[195];
+536;Knoxville;Knoxville;2;[];
+537;Richmond;Richmond;2;[];
+538;Baltimore;Baltimore;2;[195];
+539;Syracuse;Syracuse;2;[];
+540;San_Jose;San Jose;2;[229, 195];
+541;Sacramento;Sacramento;2;[195];
+542;Las_Vegas;Las Vegas;2;[195];
+543;Portland;Portland;2;[195];
+544;Salt_Lake_City;Salt Lake City;2;[];
+545;Omaha;Omaha;2;[];
+546;Oklahoma_City;Oklahoma City;2;[];
+547;San_Antonio;San Antonio;2;[195];
+548;Raleigh;Raleigh;2;[195];
+549;Cleveland;Cleveland;2;[195];
+550;Cincinnati;Cincinnati;2;[195];
+551;Nashville;Nashville;2;[];
+552;Memphis;Memphis;2;[195];
+553;Norfolk;Norfolk;2;[195];
+554;Milwaukee;Milwaukee;2;[195];
+555;Buffalo;Buffalo;2;[195];
+556;Pittsburgh;Pittsburgh;2;[195];
+557;Minneapolis;Minneapolis;2;[195];
+558;Seattle;Seattle;2;[195];
+559;Phoenix;Phoenix;2;[195];
+560;San_Diego;San Diego;2;[195];
+561;St._Louis;St. Louis;2;[195];
+562;New_Orleans;New Orleans;2;[];
+563;Dallas;Dallas;2;[195];
+564;Boston;Boston;2;[195];
+565;Tampa;Tampa;2;[195];
+566;Philadelphia;Philadelphia;2;[195];
+567;Detroit;Detroit;2;[195];
+568;San_Francisco;San Francisco;2;[229, 195, 225];
+569;Denver;Denver;2;[229, 195, 225];
+570;Houston;Houston;2;[229, 195, 225];
+571;Miami;Miami;2;[229, 195, 225];
+572;Atlanta;Atlanta;2;[229, 195, 225];
+573;Chicago;Chicago;2;[229, 195, 225];
+574;Los_Angeles;Los Angeles;2;[229, 195, 225];
+575;Washington,_D.C.;Washington, D.C.;2;[229, 195, 225];
+576;New_York;New York;2;[229, 195, 225];
+577;Bielefeld;Bielefeld;2;[159];
+578;Dortmund;Dortmund;2;[159];
+579;Duisburg;Duisburg;2;[159];
+580;Wuppertal;Wuppertal;2;[159];
+581;Essen;Essen;2;[159];
+582;Karlsruhe;Karlsruhe;2;[159];
+583;Heidelberg;Heidelberg;2;[159];
+584;Augsburg;Augsburg;2;[159];
+585;Chemnitz;Chemnitz;2;[159];
+586;Bonn;Bonn;2;[159];
+587;Dusseldorf;Ddsseldorf;2;[159];
+588;Mannheim;Mannheim;2;[159];
+589;Wiesbaden;Wiesbaden;2;[159];
+590;Hannover;Hannover;2;[159];
+591;Koblenz;Koblenz;2;[159];
+592;Saarbrucken;Saarbrucken;2;[159];
+593;Leipzig;Leipzig;2;[159];
+594;Stuttgart;Stuttgart;2;[159];
+595;Bremen;Bremen;2;[159];
+596;Nurnberg;Nornberg;2;[159];
+597;Cologne;Cologne;2;[159];
+598;Dresden;Dresden;2;[159];
+599;Frankfurt;Frankfurt;2;[159];
+600;Hamburg;Hamburg;2;[159];
+601;Munich;Munich;2;[159];
+602;London_Ca;London;2;[126];
+603;Windsor;Windsor;2;[126];
+604;Winnipeg;Winnipeg;2;[126];
+605;Calgary;Calgary;2;[126];
+606;Ottawa;Ottawa;2;[126, 229];
+607;Quebec;Quebec;2;[126];
+608;Halifax;Halifax;2;[126];
+609;Edmonton;Edmonton;2;[126];
+610;Montreal;Montreal;2;[126];
+611;Vancouver;Vancouver;2;[126, 229, 225];
+612;Toronto;Toronto;2;[126, 229, 225];
+613;Cranbourne;Cranbourne;2;[60];
+614;Gold_Coast;Gold Coast;2;[60];
+615;Canberra;Canberra;2;[60, 232];
+616;Newcastle;Newcastle;2;[60, 194];
+617;Adelaide;Adelaide;2;[60];
+618;Brisbane;Brisbane;2;[60];
+619;Perth;Perth;2;[60];
+620;Melbourne;Melbourne;2;[60, 232, 225];
+621;Sydney;Sydney;2;[60, 232, 225];
+622;Bregenz;Bregenz;2;[179];
+623;Eisenstadt;Eisenstadt;2;[179];
+624;Wiener_Neustadt;Wiener Neustadt;2;[179];
+625;Graz;Graz;2;[179];
+626;Klagenfurt;Klagenfurt;2;[179];
+627;Linz;Linz;2;[179];
+628;Passau;Passau;2;[179];
+629;Salzburg;Salzburg;2;[179];
+630;Innsbruck;Innsbruck;2;[179];
+631;Jihlava;Jihlava;2;[79];
+632;Plzen;Plzeň;2;[79];
+633;Otrokovice;Otrokovice;2;[79];
+634;Kudowa-Zdroj;Kudowa-Zdrój;2;[];
+635;Klingenthal;Klingenthal;2;[];
+636;Trinec;Třinec;2;[79];
+637;Klasterec_nad_Ohri;Klášterec nad Ohří;2;[79];
+638;Pelhrimov;Pelhřimov;2;[79];
+639;Chrudim;Chrudim;2;[79];
+640;Pardubice;Pardubice;2;[79];
+641;Hradec_Kralove;Hradec Králové;2;[79];
+642;Havlickuv_Brod;Havlíčkův Brod;2;[79];
+643;Zdar_nad_Sazavou;Žďár nad Sázavou;2;[79];
+644;Velke_Mezirici;Velké Meziříčí;2;[79];
+645;Svitavy;Svitavy;2;[79];
+646;Moravska_Trebova;Moravská Třebová;2;[79];
+647;Ceska_Trebova;Česká Třebová;2;[79];
+648;Usti_nad_Orlici;Ústí nad Orlicí;2;[79];
+649;Vysoke_Myto;Vysoké Mýto;2;[79];
+650;Trebic;Třebíč;2;[79];
+651;Nachod;Náchod;2;[79];
+652;Jicin;Jičín;2;[79];
+653;Vrchlabi;Vrchlabí;2;[79];
+654;Trutnov;Trutnov;2;[79];
+655;Dvur_Kralove_nad_Labem;Dvůr Králové nad Labem;2;[79];
+656;Rychnov_nad_Kneznou;Rychnov nad Kněžnou;2;[79];
+657;Turnov;Turnov;2;[79];
+658;Liberec;Liberec;2;[79];
+659;Jablonec_nad_Nisou;Jablonec nad Nisou;2;[79];
+660;Ceska_Lipa;Česká Lípa;2;[79];
+661;Novy_Bor;Nový Bor;2;[79];
+662;Usti_nad_Labem;Ústí nad Labem;2;[79];
+663;Teplice;Teplice;2;[79];
+664;Bilina;Bílina;2;[79];
+665;Most;Most;2;[79];
+666;Litvinov;Litvínov;2;[79];
+667;Zatec;Žatec;2;[79];
+668;Louny;Louny;2;[79];
+669;Kadan;Kadaň;2;[79];
+670;Jirkov;Jirkov;2;[79];
+671;Chomutov;Chomutov;2;[79];
+672;Varnsdorf;Varnsdorf;2;[79];
+673;Rumburk;Rumburk;2;[79];
+674;Decin;Děčín;2;[79];
+675;Roudnice_nad_Labem;Roudnice nad Labem;2;[79];
+676;Litomerice;Litoměřice;2;[79];
+677;Kromeriz;Kroměříž;2;[79];
+678;Holesov;Holešov;2;[79];
+679;Uhersky_Brod;Uherský Brod;2;[79];
+680;Vsetin;Vsetín;2;[79];
+681;Valasske_Mezirici;Valašské Meziříčí;2;[79];
+682;Roznov_pod_Radhostem;Rožnov pod Radhoštěm;2;[79];
+683;Zlin;Zlín;2;[79];
+684;Marianske_Lazne;Mariánské Lázně;2;[79];
+685;Cheb;Cheb;2;[79];
+686;As;Aš;2;[79];
+687;Ostrov;Ostrov;2;[79];
+688;Karlovy_Vary;Karlovy Vary;2;[79];
+689;Sokolov;Sokolov;2;[79];
+690;Chodov;Chodov;2;[79];
+691;Ceske_Budejovice;České Budějovice;2;[79];
+692;Cesky_Krumlov;Český Krumlov;2;[79];
+693;Jindrichuv_Hradec;Jindřichův Hradec;2;[79];
+694;Pisek;Písek;2;[79];
+695;Prachatice;Prachatice;2;[79];
+696;Strakonice;Strakonice;2;[79];
+697;Tabor;Tábor;2;[79];
+698;Jesenik;Jeseník;2;[79];
+699;Sternberk;Šternberk;2;[79];
+700;Unicov;Uničov;2;[79];
+701;Olomouc;Olomouc;2;[79];
+702;Prostejov;Prostějov;2;[79];
+703;Prerov;Přerov;2;[79];
+704;Hranice;Hranice;2;[79];
+705;Sumperk;Šumperk;2;[79];
+706;Zabreh;Zábřeh;2;[79];
+707;Domazlice;Domažlice;2;[79];
+708;Susice;Sušice;2;[79];
+709;Klatovy;Klatovy;2;[79];
+710;Rokycany;Rokycany;2;[79];
+711;Tachov;Tachov;2;[79];
+712;Vlasim;Vlašim;2;[79];
+713;Benesov;Benešov;2;[79];
+714;Beroun;Beroun;2;[79];
+715;Slany;Slaný;2;[79];
+716;Kladno;Kladno;2;[79];
+717;Kolin;Kolín;2;[79];
+718;Kutna_Hora;Kutná Hora;2;[79];
+719;Neratovice;Neratovice;2;[79];
+720;Melnik;Mělník;2;[79];
+721;Kralupy_nad_Vltavou;Kralupy nad Vltavou;2;[79];
+722;Mlada_Boleslav;Mladá Boleslav;2;[79];
+723;Podebrady;Poděbrady;2;[79];
+724;Nymburk;Nymburk;2;[79];
+725;Brandys_nad_Labem-Stara_Boleslav;Brandýs nad Labem-Stará Boleslav;2;[79];
+726;Pribram;Příbram;2;[79];
+727;Rakovnik;Rakovník;2;[79];
+728;Krnov;Krnov;2;[79];
+729;Bruntal;Bruntál;2;[79];
+730;Frydek-Mistek;Frýdek-Místek;2;[79];
+731;Cesky_Tesin;Český Těšín;2;[79];
+732;Orlova;Orlová;2;[79];
+733;Karvina;Karviná;2;[79];
+734;Havirov;Havířov;2;[79];
+735;Bohumin;Bohumín;2;[79];
+736;Novy_Jicin;Nový Jičín;2;[79];
+737;Koprivnice;Kopřivnice;2;[79];
+738;Frenstat_pod_Radhostem;Frenštát pod Radhoštěm;2;[79];
+739;Opava;Opava;2;[79];
+740;Hlucin;Hlučín;2;[79];
+741;Ostrava;Ostrava;2;[79];
+742;Boskovice;Boskovice;2;[79];
+743;Blansko;Blansko;2;[79];
+744;Brno;Brno;2;[79];
+745;Breclav;Břeclav;2;[79];
+746;Veseli_nad_Moravou;Veselí nad Moravou;2;[79];
+747;Hodonin;Hodonín;2;[79];
+748;Kyjov;Kyjov;2;[79];
+749;Vyskov;Vyškov;2;[79];
+750;Znojmo;Znojmo;2;[79];
+751;Praha;Praha;2;[79];
+752;Rejdice;Rejdice;2;[];
+753;Uherske_Hradiste;Uherské Hradiště;2;[79];
+754;Hejnice;Hejnice;2;[];
+755;Angers;Angers;2;[94];
+756;Clermont-Ferrand;Clermont-Ferrand;2;[94];
+757;Melun;Melun;2;[94];
+758;Saint-Etienne;Saint-Etienne;2;[94];
+759;Grenoble;Grenoble;2;[94];
+760;Caen;Caen;2;[94];
+761;Nantes;Nantes;2;[94];
+762;Toulon;Toulon;2;[94];
+763;Montpellier;Montpellier;2;[94];
+764;Nimes;Nimes;2;[94];
+765;Dijon;Dijon;2;[94];
+766;Tours;Tours;2;[94];
+767;Orleans;Orleans;2;[94];
+768;Rouen;Rouen;2;[94];
+769;Reims;Reims;2;[94];
+770;Mulhouse;Mulhouse;2;[94];
+771;Nancy;Nancy;2;[94];
+772;Metz;Metz;2;[94];
+773;Rennes;Rennes;2;[94];
+774;Nice;Nice;2;[94];
+775;Toulouse;Toulouse;2;[94];
+776;Limoges;Limoges;2;[94];
+777;Lille;Lille;2;[94];
+778;Strasbourg;Strasbourg;2;[94];
+779;Bordeaux;Bordeaux;2;[94];
+780;Marseille;Marseille;2;[94];
+781;Le_Havre;Le Havre;2;[94];
+782;Lyon;Lyon;2;[94];
+783;Modena;Modena;2;[115];
+784;Reggio_di_Calabria;Reggio di Calabria;2;[115];
+785;Caserta;Caserta;2;[115];
+786;Como;Como;2;[115];
+787;Treviso;Treviso;2;[115];
+788;Parma;Parma;2;[115];
+789;Bologna;Bologna;2;[115];
+790;Cagliari;Cagliari;2;[115];
+791;Pisa;Pisa;2;[115];
+792;Livorno;Livorno;2;[115];
+793;Salerno;Salerno;2;[115];
+794;Bari;Bari;2;[115];
+795;Foggia;Foggia;2;[115];
+796;Lecce;Lecce;2;[115];
+797;Taranto;Taranto;2;[115];
+798;Messina;Messina;2;[115];
+799;Pescara;Pescara;2;[115];
+800;Bergamo;Bergamo;2;[115];
+801;Trieste;Trieste;2;[115];
+802;Verona;Verona;2;[115];
+803;Turin;Turin;2;[115];
+804;Genoa;Genoa;2;[115];
+805;Florence;Florence;2;[115];
+806;Catania;Catania;2;[115];
+807;Venice;Venice;2;[115];
+808;Palermo;Palermo;2;[115];
+809;Naples;Naples;2;[115];
+810;Milan;Milan;2;[115];
+811;Marbella;Marbella;2;[203];
+812;Mataro;Mataro;2;[203];
+813;Gijon;Gijon;2;[203];
+814;Vitoria;Vitoria;2;[203];
+815;Almeria;Almeria;2;[203];
+816;Malaga;Malaga;2;[203];
+817;Albacete;Albacete;2;[203];
+818;Santander;Santander;2;[203];
+819;Salamanca;Salamanca;2;[203];
+820;Burgos;Burgos;2;[203];
+821;Cartagena;Cartagena;2;[203];
+822;Oviedo;Oviedo;2;[203];
+823;San_Sebastian;San Sebastiln;2;[203];
+824;Alicante;Alicante;2;[203];
+825;Castello;Castello;2;[203];
+826;Cadiz;Cadiz;2;[203];
+827;Granada;Granada;2;[203];
+828;Murcia;Murcia;2;[203];
+829;La_Coruna;La Coruea;2;[203];
+830;Pamplona;Pamplona;2;[203];
+831;Valladolid;Valladolid;2;[203];
+832;Palma;Palma;2;[203];
+833;Zaragoza;Zaragoza;2;[203];
+834;Cordoba;Cordoba;2;[58, 203];
+835;Vigo;Vigo;2;[203];
+836;Bilbao;Bilbao;2;[203];
+837;Seville;Seville;2;[203];
+838;Valencia;Valencia;2;[203];
+839;Barcelona;Barcelona;2;[203];
+840;-99;N. Cyprus;1;[109];
+841;tt;Trinidad and Tobago;1;[229, 225];
+842;vu;Vanuatu;1;[232, 225];
+843;Saaremaa;Saaremaa;9;[230];
+844;Aland;Åland;9;[230];
+845;Gotland;Gotland;9;[230];
+846;Zealand;Zealand;9;[230];
+847;Lofoten;Lofoten;9;[230];
+848;Vesteralen;Vesterålen;9;[230];
+849;Rhodes;Rhodes;9;[230];
+850;Crete;Crete;9;[230];
+851;Malta;Malta;9;[230];
+852;Menorca;Menorca;9;[230];
+853;Mallorca;Mallorca;9;[230];
+854;Ibiza;Ibiza;9;[230];
+855;Lesbos;Lesbos;9;[230];
+856;Kolguyev_I.;Kolguyev I.;9;[230];
+857;Sardegna;Sardegna;9;[230, 225];
+858;Corse;Corse;9;[230, 225];
+859;Sicilia;Sicilia;9;[230, 225];
+860;IRELAND;IRELAND;9;[230, 225];
+861;GREAT_BRITAIN;GREAT BRITAIN;9;[230, 225];
+862;ICELAND;ICELAND;9;[230, 225];
+863;Valletta;Valletta;2;[230];
+864;Sunderland;Sunderland;2;[194];
+865;Southampton;Southampton;2;[194];
+866;Bristol;Bristol;2;[194];
+867;Bournemouth;Bournemouth;2;[194];
+868;Southend;Southend-on-Sea;2;[194];
+869;Reading;Reading;2;[194];
+870;Leicester;Leicester;2;[194];
+871;Bradford;Bradford;2;[194];
+872;Sheffield;Sheffield;2;[194];
+873;Middlesbrough;Middlesbrough;2;[194];
+874;Coventry;Coventry;2;[194];
+875;Kingston_upon_Hull;Kingston upon Hull;2;[194];
+876;Brighton;Brighton;2;[194];
+877;Portsmouth;Portsmouth;2;[194];
+878;Nottingham;Nottingham;2;[194];
+879;Stoke;Stoke;2;[194];
+880;Edinburgh;Edinburgh;2;[194];
+881;Liverpool;Liverpool;2;[194];
+882;Cardiff;Cardiff;2;[194];
+883;Leeds;Leeds;2;[194];
+884;Manchester;Manchester;2;[194];
+885;Belfast;Belfast;2;[194];
+886;Glasgow;Glasgow;2;[194];
+887;sk-bl;Bratislavský;7;[190];
+888;sk-bc;Banskobystrický;7;[190];
+889;sk-zi;Žilinský;7;[190];
+890;sk-ni;Nitriansky;7;[190];
+891;sk-tc;Trenciansky;7;[190];
+892;sk-ta;Trnavský;7;[190];
+893;sk-ki;Košický;7;[190];
+894;sk-pv;Prešov;7;[190];
+895;Zvolen;Zvolen;2;[190];
+896;Handlova;Handlová;2;[190];
+897;Puchov;Púchov;2;[190];
+898;Surany;Šurany;2;[190];
+899;Galanta;Galanta;2;[190];
+900;Povazska_Bystrica;Považská Bystrica;2;[190];
+901;Martin;Martin;2;[190];
+902;Kezmarok;Kežmarok;2;[190];
+903;Topolcany;Topoľčany;2;[190];
+904;Banska_Stiavnica;Banská Štiavnica;2;[190];
+905;Partizanske;Partizánske;2;[190];
+906;Hlohovec;Hlohovec;2;[190];
+907;Levoca;Levoča;2;[190];
+908;Myjava;Myjava;2;[190];
+909;Michalovce;Michalovce;2;[190];
+910;Samorin;Šamorín;2;[190];
+911;Humenne;Humenné;2;[190];
+912;Sabinov;Sabinov;2;[190];
+913;Dubnica_nad_Vahom;Dubnica nad Váhom;2;[190];
+914;Snina;Snina;2;[190];
+915;Rimavska_Sobota;Rimavská Sobota;2;[190];
+916;Malacky;Malacky;2;[190];
+917;Dolny_Kubin;Dolný Kubín;2;[190];
+918;Roznava;Rožňava;2;[190];
+919;Kolarovo;Kolárovo;2;[190];
+920;Zilina;Žilina;2;[190];
+921;Kysucke_Nove_Mesto;Kysucké Nové Mesto;2;[190];
+922;Holic;Holíč;2;[190];
+923;Trencin;Trenčín;2;[190];
+924;Spisska_Nova_Ves;Spišská Nová Ves;2;[190];
+925;Trebisov;Trebišov;2;[190];
+926;Revuca;Revúca;2;[190];
+927;Banovce_nad_Bebravou;Bánovce nad Bebravou;2;[190];
+928;Stara_Lubovna;Stará Ľubovňa;2;[190];
+929;Zlate_Moravce;Zlaté Moravce;2;[190];
+930;Komarno;Komárno;2;[190];
+931;Lucenec;Lučenec;2;[190];
+932;Bardejov;Bardejov;2;[190];
+933;Skalica;Skalica;2;[190];
+934;Velky_Krtis;Veľký Krtíš;2;[190];
+935;Piestany;Piešťany;2;[190];
+936;Sturovo;Štúrovo;2;[190];
+937;Brezno;Brezno;2;[190];
+938;Presov;Prešov;2;[190];
+939;Filakovo;Fiľakovo;2;[190];
+940;Stropkov;Stropkov;2;[190];
+941;Dunajska_Streda;Dunajská Streda;2;[190];
+942;Nove_Mesto_nad_Vahom;Nové Mesto nad Váhom;2;[190];
+943;Cadca;Čadca;2;[190];
+944;Pezinok;Pezinok;2;[190];
+945;Trnava;Trnava;2;[190];
+946;Ruzomberok;Ružomberok;2;[190];
+947;Liptovsky_Mikulas;Liptovský Mikuláš;2;[190];
+948;Banska_Bystrica;Banská Bystrica;2;[190];
+949;Nova_Dubnica;Nová Dubnica;2;[190];
+950;Senec;Senec;2;[190];
+951;Detva;Detva;2;[190];
+952;Prievidza;Prievidza;2;[190];
+953;Nove_Zamky;Nové Zámky;2;[190];
+954;Svidnik;Svidník;2;[190];
+955;Sered;Sereď;2;[190];
+956;Vranov_nad_Toplou;Vranov nad Topľou;2;[190];
+957;Ziar_nad_Hronom;Žiar nad Hronom;2;[190];
+958;Poprad;Poprad;2;[190];
+959;Nitra;Nitra;2;[190];
+960;Levice;Levice;2;[190];
+961;Bytca;Bytča;2;[190];
+962;Moldava_nad_Bodvou;Moldava nad Bodvou;2;[190];
+963;Kosice;Košice;2;[190];
+964;Sala;Šaľa;2;[190];
+965;Senica;Senica;2;[190];
+966;TIERRA_DEL_FUEGO;TIERRA DEL FUEGO;9;[225];
+967;Nova_Scotia;Nova Scotia;9;[225];
+968;Vancouver_Island;Vancouver Island;9;[225];
+969;VICTORIA_ISLAND;VICTORIA ISLAND;9;[225];
+970;LABRADOR;LABRADOR;9;[225];
+971;ELLESMERE_ISLAND;ELLESMERE  ISLAND;9;[225];
+972;BAFFIN_ISLAND;BAFFIN ISLAND;9;[225];
+973;ISLAND_OF_NEWFOUNDLAND;ISLAND OF NEWFOUNDLAND;9;[225];
+974;SULAWESI;SULAWESI;9;[231, 225];
+975;JAVA;JAVA;9;[231, 225];
+976;MINDANAO;MINDANAO;9;[231, 225];
+977;LUZON;LUZON;9;[231, 225];
+978;TAIWAN;TAIWAN;9;[231, 225];
+979;KYUSHU;KYÜSHÜ;9;[231, 225];
+980;SHIKOKU;SHIKOKU;9;[231, 225];
+981;HOKKAIDO;HOKKAIDÖ;9;[231, 225];
+982;SAKHALIN;SAKHALIN;9;[231, 225];
+983;SRI_LANKA;SRI LANKA;9;[231, 225];
+984;TASMANIA;TASMANIA;9;[225];
+985;NEW_GUINEA;NEW GUINEA;9;[225];
+986;BORNEO;BORNEO;9;[231, 225];
+987;SUMATRA;SUMATRA;9;[231, 225];
+988;HONSHU;HONSHÜ;9;[231, 225];
+989;GREENLAND;GREENLAND;9;[225];
+990;MADAGASCAR;MADAGASCAR;9;[225];
+991;SOUTH_ISLAND;SOUTH ISLAND;9;[225];
+992;NORTH_ISLAND;NORTH ISLAND;9;[225];
+993;ETHIOPIAN_HIGHLANDS;ETHIOPIAN HIGHLANDS;8;[225];
+994;ZAGROS_MOUNTAINS;ZAGROS MOUNTAINS;8;[231, 225];
+995;ALTAY_MOUNTAINS;ALTAY MOUNTAINS;8;[231, 225];
+996;GREATER_KHINGAN_RANGE;GREATER KHINGAN RANGE;8;[231, 225];
+997;STANOVOY_RANGE;STANOVOY RANGE;8;[231, 225];
+998;CHAINE_ANNAMITIQUE;CHAÎNE ANNAMITIQUE;8;[231, 225];
+999;Siwalik_Hills;Siwalik Hills;8;[231, 225];
+1000;PAMIRS;PAMIRS;8;[231, 225];
+1001;HINDU_KUSH;HINDU KUSH;8;[231, 225];
+1002;KARAKORAM_RA.;KARAKORAM RA.;8;[231, 225];
+1003;KUNLUN_MOUNTAINS;KUNLUN MOUNTAINS;8;[231, 225];
+1004;ATLAS_MOUNTAINS;ATLAS MOUNTAINS;8;[225];
+1005;APPALACHIAN_MTS.;APPALACHIAN MTS.;8;[225];
+1006;BROOKS_RANGE;BROOKS RANGE;8;[225];
+1007;COAST_MOUNTAINS;COAST MOUNTAINS;8;[225];
+1008;CASCADE_RANGE;CASCADE RANGE;8;[225];
+1009;ALASKA_RANGE;ALASKA RANGE;8;[225];
+1010;GREAT_DIVIDING_RANGE;GREAT DIVIDING RANGE;8;[225];
+1011;TIAN_SHAN;TIAN SHAN;8;[231, 225];
+1012;URAL_MOUNTAINS;URAL MOUNTAINS;8;[225];
+1013;HIMALAYAS;HIMALAYAS;8;[231, 225];
+1014;ANDES;ANDES;8;[225];
+1015;ROCKY_MOUNTAINS;ROCKY MOUNTAINS;8;[225];
+1016;Brahmaputra;Brahmaputra;5;[231, 225];
+1017;Mekong;Mekong;5;[231, 225];
+1018;Ob;Ob;5;[231, 225];
+1019;Danube;Danube;5;[230, 225];
+1020;Parana;Paraná;5;[225];
+1021;Congo;Congo;5;[227, 225];
+1022;Lena;Lena;5;[231, 225];
+1023;Chang_(Yangtze);Chang (Yangtze);5;[231, 225];
+1024;Nile;Nile;5;[227, 225];
+1025;Amazon;Amazon;5;[225];
+1026;Mississippi;Mississippi;5;[225];
+1027;Lake_Baikal;Lake Baikal;6;[225];
+1028;Lake_Winnipeg;Lake Winnipeg;6;[225];
+1029;Great_Slave_Lake;Great Slave Lake;6;[225];
+1030;L._Ontario;L. Ontario;6;[225];
+1031;L._Erie;L. Erie;6;[225];
+1032;Lake_Superior;Lake Superior;6;[225];
+1033;Lake_Victoria;Lake Victoria;6;[225];
+1034;Lake_Ladoga;Lake Ladoga;6;[225];
+1035;Balqash_Koli;Balqash Köli;6;[225];
+1036;Lake_Tanganyika;Lake Tanganyika;6;[225];
+1037;Lake_Malawi;Lake Malawi;6;[225];
+1038;Aral_Sea;Aral Sea;6;[225];
+1039;Vanern;Vänern;6;[225];
+1040;Lago_de_Nicaragua;Lago de Nicaragua;6;[225];
+1041;Lago_Titicaca;Lago Titicaca;6;[225];
+1042;Lake_Winnipegosis;Lake Winnipegosis;6;[225];
+1043;Lake_Onega;Lake Onega;6;[225];
+1044;Great_Bear_Lake;Great Bear Lake;6;[225];
+1045;Reindeer_Lake;Reindeer Lake;6;[225];
+1046;Lake_Huron;Lake Huron;6;[225];
+1047;Lake_Michigan;Lake Michigan;6;[225];
+1048;Tunis;Tunis;2;[227, 225];
+1049;Baku;Baku;2;[231, 225];
+1050;Hanoi;Hanoi;2;[231, 225];
+1051;Ankara;Ankara;2;[231, 225];
+1052;Sanaa;Sanaa;2;[231, 225];
+1053;Damascus;Damascus;2;[231, 225];
+1054;Khartoum;Khartoum;2;[227, 225];
+1055;Pyongyang;Pyongyang;2;[231, 225];
+1056;Dar_es_Salaam;Dar es Salaam;2;[227, 225];
+1057;Havana;Havana;2;[229, 225];
+1058;Kuwait;Kuwait;2;[231, 225];
+1059;Santo_Domingo;Santo Domingo;2;[229, 225];
+1060;Accra;Accra;2;[227, 225];
+1061;Tripoli;Tripoli;2;[227, 225];
+1062;Tel_Aviv-Yafo;Tel Aviv-Yafo;2;[231, 225];
+1063;Abidjan;Abidjan;2;[227, 225];
+1064;Brasilia;Brasilia;2;[72, 228, 225];
+1065;Dhaka;Dhaka;2;[231, 225];
+1066;Luanda;Luanda;2;[227, 225];
+1067;Algiers;Algiers;2;[227, 225];
+1068;Rangoon;Rangoon;2;[231, 225];
+1069;Caracas;Caracas;2;[228, 225];
+1070;Tashkent;Tashkent;2;[231, 225];
+1071;Bangkok;Bangkok;2;[231, 225];
+1072;Lima;Lima;2;[228, 225];
+1073;Dakar;Dakar;2;[227, 225];
+1074;Johannesburg;Johannesburg;2;[227, 225];
+1075;Casablanca;Casablanca;2;[227, 225];
+1076;Seoul;Seoul;2;[231, 225];
+1077;Manila;Manila;2;[231, 225];
+1078;Monterrey;Monterrey;2;[229, 225];
+1079;Urumqi;Urumqi;2;[231, 225];
+1080;Chengdu;Chengdu;2;[231, 225];
+1081;Osaka;Osaka;2;[231, 225];
+1082;Kinshasa;Kinshasa;2;[227, 225];
+1083;Bangalore;Bangalore;2;[231, 225];
+1084;Baghdad;Baghdad;2;[231, 225];
+1085;Addis_Ababa;Addis Ababa;2;[227, 225];
+1086;Tehran;Tehran;2;[231, 225];
+1087;Buenos_Aires;Buenos Aires;2;[58, 228, 225];
+1088;Kabul;Kabul;2;[231, 225];
+1089;Taipei;Taipei;2;[231, 225];
+1090;Istanbul;Istanbul;2;[231, 225];
+1091;Riyadh;Riyadh;2;[231, 225];
+1092;Cape_Town;Cape Town;2;[227, 225];
+1093;Mexico_City;Mexico City;2;[229, 225];
+1094;Lagos;Lagos;2;[227, 225];
+1095;Beijing;Beijing;2;[231, 225];
+1096;Nairobi;Nairobi;2;[227, 225];
+1097;Jakarta;Jakarta;2;[231, 225];
+1098;Bogota;Bogota;2;[228, 225];
+1099;Cairo;Cairo;2;[227, 225];
+1100;Shanghai;Shanghai;2;[231, 225];
+1101;Tokyo;Tokyo;2;[231, 225];
+1102;Mumbai;Mumbai;2;[231, 225];
+1103;Santiago;Santiago;2;[228, 225];
+1104;Kolkata;Kolkata;2;[231, 225];
+1105;Rio_de_Janeiro;Rio de Janeiro;2;[72, 228, 225];
+1106;Sao_Paulo;Sao Paulo;2;[72, 228, 225];
+1107;Singapore;Singapore;2;[231, 225];
+1108;Hong_Kong;Hong Kong;2;[231, 225];
+1109;Bir_Lehlou;Bir Lehlou;2;[227];
+1110;Moroni;Moroni;2;[227];
+1111;Kigali;Kigali;2;[227];
+1112;Mbabane;Mbabane;2;[227];
+1113;Juba;Juba;2;[227];
+1114;Dodoma;Dodoma;2;[227];
+1115;Laayoune;Laayoune;2;[227];
+1116;Djibouti;Djibouti;2;[227];
+1117;Banjul;Banjul;2;[227];
+1118;Porto-Novo;Porto-Novo;2;[227];
+1119;Bujumbura;Bujumbura;2;[227];
+1120;Lome;Lome;2;[227];
+1121;Lusaka;Lusaka;2;[227];
+1122;Harare;Harare;2;[227];
+1123;Kampala;Kampala;2;[227];
+1124;Niamey;Niamey;2;[227];
+1125;Freetown;Freetown;2;[227];
+1126;Bloemfontein;Bloemfontein;2;[227];
+1127;Pretoria;Pretoria;2;[227];
+1128;Rabat;Rabat;2;[227];
+1129;Maputo;Maputo;2;[227];
+1130;Mogadishu;Mogadishu;2;[227];
+1131;Windhoek;Windhoek;2;[227];
+1132;Abuja;Abuja;2;[227];
+1133;Maseru;Maseru;2;[227];
+1134;Antananarivo;Antananarivo;2;[227];
+1135;Ndjamena;Ndjamena;2;[227];
+1136;Malabo;Malabo;2;[227];
+1137;Asmara;Asmara;2;[227];
+1138;Lilongwe;Lilongwe;2;[227];
+1139;Libreville;Libreville;2;[227];
+1140;Nouakchott;Nouakchott;2;[227];
+1141;Bamako;Bamako;2;[227];
+1142;Conakry;Conakry;2;[227];
+1143;Yamoussoukro;Yamoussoukro;2;[227];
+1144;Bangui;Bangui;2;[227];
+1145;Yaounde;Yaounde;2;[227];
+1146;Gaborone;Gaborone;2;[227];
+1147;Ouagadougou;Ouagadougou;2;[227];
+1148;Hargeysa;Hargeysa;2;[227];
+1149;Sao_Tome;Sao Tome;2;[227];
+1150;Monrovia;Monrovia;2;[227];
+1151;HAINAN;HAINAN;9;[231];
+1152;TIMOR;TIMOR;9;[231];
+1153;Palawan;Palawan;9;[231];
+1154;Bohol;Bohol;9;[231];
+1155;Negros;Negros;9;[231];
+1156;Leyte;Leyte;9;[231];
+1157;Samar;Samar;9;[231];
+1158;Panay;Panay;9;[231];
+1159;Mindoro;Mindoro;9;[231];
+1160;Melekeok;Melekeok;2;[231];
+1161;Doha;Doha;2;[231];
+1162;Baguio_City;Baguio City;2;[231];
+1163;Putrajaya;Putrajaya;2;[231];
+1164;Manama;Manama;2;[231];
+1165;Abu_Dhabi;Abu Dhabi;2;[231];
+1166;Ashgabat;Ashgabat;2;[231];
+1167;Dili;Dili;2;[231];
+1168;Dushanbe;Dushanbe;2;[231];
+1169;Islamabad;Islamabad;2;[231];
+1170;Kathmandu;Kathmandu;2;[231];
+1171;Muscat;Muscat;2;[231];
+1172;Colombo;Colombo;2;[231];
+1173;Ulaanbaatar;Ulaanbaatar;2;[231];
+1174;Amman;Amman;2;[231];
+1175;Bishkek;Bishkek;2;[231];
+1176;Beirut;Beirut;2;[231];
+1177;Tbilisi;Tbilisi;2;[231];
+1178;Astana;Astana;2;[231];
+1179;Vientiane;Vientiane;2;[231];
+1180;Bandar_Seri_Begawan;Bandar Seri Begawan;2;[231];
+1181;Yerevan;Yerevan;2;[231];
+1182;Phnom_Penh;Phnom Penh;2;[231];
+1183;Thimphu;Thimphu;2;[231];
+1184;Naypyidaw;Naypyidaw;2;[231];
+1185;Male;Male;2;[231];
+1186;Jerusalem;Jerusalem;2;[231];
+1187;Nicosia;Nicosia;2;[231];
+1188;Kuala_Lumpur;Kuala Lumpur;2;[231];
+1189;Dubai;Dubai;2;[231];
+1190;New_Delhi;New Delhi;2;[231];
+1191;Port-of-Spain;Port-of-Spain;2;[229];
+1192;Roseau;Roseau;2;[229];
+1193;Bridgetown;Bridgetown;2;[229];
+1194;Kingstown;Kingstown;2;[229];
+1195;Castries;Castries;2;[229];
+1196;Basseterre;Basseterre;2;[229];
+1197;Saint_George's;Saint George's;2;[229];
+1198;Saint_John's;Saint John's;2;[229];
+1199;Tegucigalpa;Tegucigalpa;2;[229];
+1200;Port-au-Prince;Port-au-Prince;2;[229];
+1201;Managua;Managua;2;[229];
+1202;Panama_City;Panama City;2;[229];
+1203;San_Salvador;San Salvador;2;[229];
+1204;Kingston;Kingston;2;[229];
+1205;Guatemala;Guatemala;2;[229];
+1206;Belmopan;Belmopan;2;[229];
+1207;Nassau;Nassau;2;[229];
+1208;Funafuti;Funafuti;2;[232];
+1209;Tarawa;Tarawa;2;[232];
+1210;Port-Vila;Port Vila;2;[232];
+1211;Port_Moresby;Port Moresby;2;[232];
+1212;Honiara;Honiara;2;[232];
+1213;Wellington;Wellington;2;[232];
+1214;Suva;Suva;2;[232];
+1215;Auckland;Auckland;2;[232];
+1216;Montevideo;Montevideo;2;[228];
+1217;Georgetown;Georgetown;2;[228];
+1218;Paramaribo;Paramaribo;2;[228];
+1219;Asuncion;Asuncion;2;[228];
+1220;Quito;Quito;2;[228];
+1221;Sucre;Sucre;2;[228];
+1222;La_Paz;La Paz;2;[228];
+1223;Sumava;Sumava;8;[79];
+1224;Krusne_hory;Krusné hory;8;[79];
+1225;Ceske_Stredohori;Ceské Stredohorí;8;[79];
+1226;Krkonose;Krkonose;8;[79];
+1227;Jizerske_hory;Jizerské hory;8;[79];
+1228;Orlicke_hory;Orlické hory;8;[79];
+1229;Hruby_Jesenik;Hrubý Jeseník;8;[79];
+1230;Beskydy;Beskydy;8;[79];
+1231;Ceskomoravska_vrchovina;Ceskomoravská vrchovina;8;[79];
+1232;Bile_Karpaty;Bílé Karpaty;8;[79];
+1233;Cesky_les;Ceský les;8;[79];
+1234;Drahanska_vrchovina;Drahanská vrchovina;8;[79];
+1235;Rychlebske_hory;Rychlebské hory;8;[79];
+1236;Nizky_Jesenik;Nízký Jeseník;8;[79];
+1237;Plzenska_pahorkatina;Plzenská pahorkatina;8;[79];
+1238;Novohradske_hory;Novohradské hory;8;[79];
+1239;Chriby;Chriby;8;[79];
+1240;Doupovske_hory;Doupovské hory;8;[79];
+1241;Brdy;Brdy;8;[79];
+1242;Jestedsko-kozakovsky_hrbet;Jestedsko-kozákovský hrbet;8;[79];
+1243;Luzicke_hory;Luzické hory;8;[79];
+1244;Javorniky;Javorníky;8;[79];
+1245;Stredoceska_pahorkatina;Stredoceská pahorkatina;8;[79];
+1246;Labe;Labe;5;[79];
+1247;Vltava;Vltava;5;[79];
+1248;Ohre;Ohre;5;[79];
+1249;Berounka;Berounka;5;[79];
+1250;Sazava;Sázava;5;[79];
+1251;Otava;Otava;5;[79];
+1252;Morava;Morava;5;[79];
+1253;Orlice;Orlice;5;[79];
+1254;Odra;Odra;5;[79];
+1255;Ostravice;Ostravice;5;[79];
+1256;Dyje;Dyje;5;[79];
+1257;Svratka;Svratka;5;[79];
+1258;Svitava;Svitava;5;[79];
+1259;Jizera;Jizera;5;[79];
+1260;Uslava;Úslava;5;[79];
+1261;Uhlava;Úhlava;5;[79];
+1262;Radbuza;Radbuza;5;[79];
+1263;Mze;Mze;5;[79];
+1264;Becva;Becva;5;[79];
+1265;Daugava_(Zapadnaya_Dvina);Daugava (Zapadnaya Dvina);5;[230];
+1266;Dniester;Dniester;5;[230];
+1267;Drava;Drava;5;[230];
+1268;Duero;Duero;5;[230];
+1269;Ebro;Ebro;5;[230];
+1270;Elbe;Elbe;5;[230];
+1271;Garonne;Garonne;5;[230];
+1272;Loire;Loire;5;[230];
+1273;Oder;Oder;5;[230];
+1274;Po;Po;5;[230];
+1275;Seine;Seine;5;[230];
+1276;Svernaya_Dvina;Svernaya Dvina;5;[230];
+1277;Thames;Thames;5;[230];
+1278;Vistula;Vistula;5;[230];
+1279;Vychegda;Vychegda;5;[230];
+1280;Rhine;Rhine;5;[230];
+1281;Volga;Volga;5;[230, 225];
+1282;Don;Don;5;[230];
+1283;Dalalven;Dalälven;5;[230];
+1284;Kama;Kama;5;[230];
+1285;Tajo;Tajo;5;[230];
+1286;Tisa;Tisa;5;[230];
+1287;Dnepre;Dnepre;5;[230];
+1288;Rhone;Rhône;5;[230];
+1289;Glomma;Glomma;5;[230];
+1290;Kemijoki;Kemijoki;5;[230];
+1291;Sukhona;Sukhona;5;[230];
+1292;Luznice;Luznice;5;[79];
+1293;Ganges;Ganges;5;[231, 225];
+1294;Yenisey;Yenisey;5;[231, 225];
+1295;Missouri;Missouri;5;[225];
+1296;Yukon;Yukon;5;[225];
+1297;Orinoco;Orinoco;5;[225];
+1298;Niger;Niger;5;[227, 225];
+1299;Zambezi;Zambezi;5;[227, 225];
+1300;Rio_Grande;Rio Grande;5;[225];
+1301;Mackenzie;Mackenzie;5;[225];
+1302;Huang;Yellow River;5;[231, 225];
+1303;Darling;Darling;5;[225];
+1304;Orange;Orange;5;[227, 225];
+1305;Tigris;Tigris;5;[231, 225];
+1306;Amu_Darya;Amu  Darya;5;[231, 225];
+1307;Euphrates;Euphrates;5;[231, 225];
+1308;Indus;Indus;5;[231, 225];
+1309;Amur;Amur;5;[231, 225];
+1310;Murray;Murray;5;[225];
+1311;St._Lawrence;St. Lawrence;5;[225];
+1312;Syr_Darya;Syr  Darya;5;[225];
+1313;Yangtze;Yangtze;5;[];
+1314;Senegal;Sénégal;5;[227];
+1315;Limpopo;Limpopo;5;[227];
+1316;Okawango;Okawango;5;[227];
+1317;Ubangi;Ubangi;5;[227];
+1318;Chari;Chari;5;[227];
+1319;Baja_California;Baja California;1;[153];
+1320;Baja_California_Sur;Baja California Sur;1;[153];
+1321;Coahuila;Coahuila;1;[153];
+1322;Chihuahua;Chihuahua;1;[153];
+1323;Durango;Durango;1;[153];
+1324;Sinaloa;Sinaloa;1;[153];
+1325;Sonora;Sonora;1;[153];
+1326;Zacatecas;Zacatecas;1;[153];
+1327;Nuevo_Leon;Nuevo León;1;[153];
+1328;San_Luis_Potosi;San Luis Potosí;1;[153];
+1329;Tamaulipas;Tamaulipas;1;[153];
+1330;Aguascalientes;Aguascalientes;1;[153];
+1331;Colima;Colima;1;[153];
+1332;Jalisco;Jalisco;1;[153];
+1333;Michoacan;Michoacán;1;[153];
+1334;Nayarit;Nayarit;1;[153];
+1335;Campeche;Campeche;1;[153];
+1336;Oaxaca;Oaxaca;1;[153];
+1337;Puebla;Puebla;1;[153];
+1338;Tabasco;Tabasco;1;[153];
+1339;Tlaxcala;Tlaxcala;1;[153];
+1340;Distrito_Federal;Distrito Federal;1;[72, 153];
+1341;Guanajuato;Guanajuato;1;[153];
+1342;Guerrero;Guerrero;1;[153];
+1343;Hidalgo;Hidalgo;1;[153];
+1344;Mexico;México;1;[153];
+1345;Morelos;Morelos;1;[153];
+1346;Queretaro;Querétaro;1;[153];
+1347;Veracruz;Veracruz;1;[153];
+1348;Chiapas;Chiapas;1;[153];
+1349;Quintana_Roo;Quintana Roo;1;[153];
+1350;Yucatan;Yucatán;1;[153];
+1351;city-Gomez_Palacio;Gomez Palacio;2;[153];
+1352;city-Reynosa;Reynosa;2;[153];
+1353;city-Tlaxcala;Tlaxcala;2;[153];
+1354;city-Irapuato;Irapuato;2;[153];
+1355;city-Celaya;Celaya;2;[153];
+1356;city-Nezahualcoyotl;Nezahualcoyotl;2;[153];
+1357;city-Orizaba;Orizaba;2;[153];
+1358;city-Xalapa;Xalapa;2;[153];
+1359;city-Mazatlan;Mazatltn;2;[153];
+1360;city-Morelia;Morelia;2;[153];
+1361;city-Tepic;Tepic;2;[153];
+1362;city-Pachuca;Pachuca;2;[153];
+1363;city-Toluca;Toluca;2;[153];
+1364;city-Saltillo;Saltillo;2;[153];
+1365;city-Ciudad_Juarez;Ciudad Ju rez;2;[153];
+1366;city-Durango;Durango;2;[153];
+1367;city-Aguascalientes;Aguascalientes;2;[153];
+1368;city-Villahermosa;Villahermosa;2;[153];
+1369;city-Cuernavaca;Cuernavaca;2;[153];
+1370;city-Queretaro;Queretaro;2;[153];
+1371;city-Mexicali;Mexicali;2;[153];
+1372;city-Torreon;Torreon;2;[153];
+1373;city-Culiacan;Culiacan;2;[153];
+1374;city-Hermosillo;Hermosillo;2;[153];
+1375;city-San_Luis_Potosi;San Luis Potosi;2;[153];
+1376;city-Matamoros;Matamoros;2;[153];
+1377;city-Nuevo_Laredo;Nuevo Laredo;2;[153];
+1378;city-Oaxaca;Oaxaca;2;[153];
+1379;city-Leon;Leon;2;[153];
+1380;city-Tijuana;Tijuana;2;[153];
+1381;city-Chihuahua;Chihuahua;2;[153];
+1382;city-Tampico;Tampico;2;[153];
+1383;city-Acapulco;Acapulco;2;[153];
+1384;city-Veracruz;Veracruz;2;[153];
+1385;city-Tuxtla_Gutierrez;Tuxtla Gutierrez;2;[153];
+1386;city-Cancun;Cancun;2;[153];
+1387;city-Merida;Merida;2;[153];
+1388;city-Guadalajara;Guadalajara;2;[153];
+1389;city-Puebla;Puebla;2;[153];
+1390;city-Monterrey;Monterrey;2;[153];
+1391;city-Mexico_City;Mexico City;2;[153];
+1392;Santa_Cruz;Santa Cruz;1;[58];
+1393;Tierra_del_Fuego-state;Tierra del Fuego;1;[58];
+1394;San_Juan;San Juan;1;[58];
+1395;Chubut;Chubut;1;[58];
+1396;Mendoza;Mendoza;1;[58];
+1397;Neuquen;Neuquén;1;[58];
+1398;La_Pampa;La Pampa;1;[58];
+1399;Rio_Negro;Río Negro;1;[58];
+1400;San_Luis;San Luis;1;[58];
+1401;Catamarca;Catamarca;1;[58];
+1402;Jujuy;Jujuy;1;[58];
+1403;La_Rioja;La Rioja;1;[58];
+1404;Salta;Salta;1;[58];
+1405;Santiago_del_Estero;Santiago del Estero;1;[58];
+1406;Tucuman;Tucumán;1;[58];
+1407;Chaco;Chaco;1;[58];
+1408;Formosa;Formosa;1;[58];
+1409;Corrientes;Corrientes;1;[58];
+1410;Entre_Rios;Entre Ríos;1;[58];
+1411;Santa_Fe;Santa Fe;1;[58];
+1412;Misiones;Misiones;1;[58];
+1413;Ciudad_de_Buenos_Aires;Ciudad de Buenos Aires;1;[58];
+1414;city-Corrientes;Corrientes;2;[58];
+1415;city-La_Plata;La Plata;2;[58];
+1416;city-San_Luis;San Luis;2;[58];
+1417;city-San_Salvador_de_Jujuy;San Salvador de Jujuy;2;[58];
+1418;city-Santiago_del_Estero;Santiago del Estero;2;[58];
+1419;city-Resistencia;Resistencia;2;[58];
+1420;city-San_Juan;San Juan;2;[58];
+1421;city-Salta;Salta;2;[58];
+1422;city-San_Miguel_de_Tucuman;Tucum-n;2;[58];
+1423;city-Santa_Fe;Santa Fe;2;[58];
+1424;city-Rosario;Rosario;2;[58];
+1425;city-Mendoza;Mendoza;2;[58];
+1426;city-Mar_del_Plata;Mar del Plata;2;[58];
+1427;city-Cordoba;Cordoba;2;[58];
+1428;city-Posadas;Posadas;2;[58];
+1429;city-Buenos_Aires;Buenos Aires;2;[58];
+1430;Goias;Goiás;1;[72];
+1431;Pernambuco;Pernambuco;1;[72];
+1432;Acre;Acre;1;[72];
+1433;Amazonas;Amazonas;1;[72];
+1434;Maranhao;Maranhão;1;[72];
+1435;Para;Pará;1;[72];
+1436;Rondonia;Rondônia;1;[72];
+1437;Tocantins;Tocantins;1;[72];
+1438;Mato_Grosso_do_Sul;Mato Grosso do Sul;1;[72];
+1439;Minas_Gerais;Minas Gerais;1;[72];
+1440;Mato_Grosso;Mato Grosso;1;[72];
+1441;Rio_Grande_do_Sul;Rio Grande do Sul;1;[72];
+1442;Parana-state;Paraná;1;[72];
+1443;Santa_Catarina;Santa Catarina;1;[72];
+1444;Ceara;Ceará;1;[72];
+1445;Piaui;Piauí;1;[72];
+1446;Alagoas;Alagoas;1;[72];
+1447;Bahia;Bahia;1;[72];
+1448;Espirito_Santo;Espírito Santo;1;[72];
+1449;Paraiba;Paraíba;1;[72];
+1450;Rio_de_Janeiro-state;Rio de Janeiro;1;[72];
+1451;Rio_Grande_do_Norte;Rio Grande do Norte;1;[72];
+1452;Sergipe;Sergipe;1;[72];
+1453;Roraima;Roraima;1;[72];
+1454;Amapa;Amapá;1;[72];
+1455;Niteroi;Niteroi;2;[72];
+1456;Vitoria-Brazil;Vitoria;2;[72];
+1457;Vila_Velha;Vila Velha;2;[72];
+1458;Santos;Santos;2;[72];
+1459;Sao_Luis;Sdo Lu1s;2;[72];
+1460;Belo_Horizonte;Belo Horizonte;2;[72];
+1461;Maceio;Maceio;2;[72];
+1462;Natal;Natal;2;[72];
+1463;Campinas;Campinas;2;[72];
+1464;Manaus;Manaus;2;[72];
+1465;Florianopolis;Florianopolis;2;[72];
+1466;Belem;Belem;2;[72];
+1467;Porto_Alegre;Porto Alegre;2;[72];
+1468;Curitiba;Curitiba;2;[72];
+1469;Fortaleza;Fortaleza;2;[72];
+1470;Salvador;Salvador;2;[72];
+1471;Goiania;Goiania;2;[72];
+1472;Recife;Recife;2;[72];
+1473;gf;French Guiana;1;[228];

@@ -15,11 +15,11 @@ SHOW_GRAPH = True
 LOG_COMET = True
 
 ## Neural net params
-MAX_COUNT = 30000
+MAX_COUNT = 10000
 LEARNING_RATE = 0.001
-BATCH_SIZE = 100
+BATCH_SIZE = 80
 DROPOUT = 0.5
-NUM_EPOCHS = 50
+NUM_EPOCHS = 100
 HIDDEN_SIZE = 50
 num_layers = 2
 
@@ -30,10 +30,12 @@ if LOG_COMET:
     params = """  
     learning_rate real [0.0001, 0.01] [0.001] 
     state_size integer [10,500] [100] 
+    dropout real [0, 1] [0.5]
+    num_layers integer [1,5] [2]
     """
     optimizer.set_params(params)
     hyper_params = {"learning_rate": LEARNING_RATE, "epochs": NUM_EPOCHS, "batch_size": BATCH_SIZE,
-                    "state_size": HIDDEN_SIZE}
+                    "state_size": HIDDEN_SIZE, "dropout": DROPOUT, "num_layers": num_layers}
     experiment.log_multiple_params(hyper_params)
 
 # Torch settings
@@ -41,12 +43,14 @@ torch.manual_seed(1)
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
 # DATA INITIALIZATION
-test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
-train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 train_path = "/home/dave/projects/diploma/datasets/simulated_train.csv"
 test_path = "/home/dave/projects/diploma/datasets/simulated_test.csv"
-test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
+test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
+train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
+test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
+test_path = "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_test.csv"
+train_path= "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_train.csv"
 # RNN PARAMETERS
 
 train_data = data_helper.SlepeMapyData(train_path, MAX_COUNT, BATCH_SIZE, False)
@@ -55,8 +59,7 @@ num_batch_train = len(train_data.questions) // BATCH_SIZE
 num_batch_test = len(test_data.questions) // BATCH_SIZE
 num_classes = train_data.num_questions + 1
 input_size = num_classes + 1  # correct/incorrect or any other additional params
-num_layers = 1
-sequence_length = train_data.max_seq_len
+sequence_length = max(train_data.max_seq_len, test_data.max_seq_len)
 # MODEL
 
 
@@ -73,7 +76,7 @@ class Model(nn.Module):
         self.batch_size = batch_size
         self.input_size = input_size
         self.sequence_length = sequence_length
-        self.lstm = nn.LSTM(input_size, hidden_dim, batch_first=True, dropout=DROPOUT)
+        self.lstm = nn.LSTM(input_size, hidden_dim, num_layers, batch_first=True, dropout=DROPOUT)
 
         self.hidden2tag = nn.Linear(hidden_dim, num_classes)
         self.hidden = self.init_hidden()
@@ -83,25 +86,34 @@ class Model(nn.Module):
                 torch.zeros(num_layers, self.batch_size, self.hidden_dim))
 
     def forward(self, questions, answers, hidden):
+        ### input preparation
         # questions to Tensor
         questions = torch.tensor(questions)
         questions = torch.unsqueeze(questions, 2)
+        # one-hot encoding
         x = torch.Tensor(BATCH_SIZE, sequence_length, num_classes)
         x.zero_()
         x.scatter_(2, questions, 1)
+        # concatenation of correct answer
         answers = torch.tensor(answers, dtype=torch.float)
         answers = torch.unsqueeze(answers, 2)
         input_concatenation = torch.cat((x, answers), 2)
-        input_concatenation = input_concatenation.view(self.batch_size, self.sequence_length , -1)
+
+        # concatenation of additional params
+        # options = torch.tensor(options, dtype=torch.float)
+        # options = torch.unsqueeze(options, 2)
+        # input_concatenation = torch.cat((input_concatenation, options), 2)
+        input_concatenation = input_concatenation.view(self.batch_size, self.sequence_length, -1)
+
+        ### LSTM layer
         lstm_out, self.hidden = self.lstm(input_concatenation, hidden)
-        ### Not neccessity just to be sure to have exact dimensions
         output = self.hidden2tag(lstm_out.view(BATCH_SIZE, self.sequence_length, -1))
         return output, self.hidden
 
     def run_train(self, hidden):
         prediction_labels = []
         correct_labels = []
-        for i in range(NUM_BATCH_TRAIN):
+        for i in range(num_batch_train):
             ### Forward pass
             questions, answers, questions_target, answers_target, batch_seq_len = train_data.next(BATCH_SIZE, sequence_length)
             ### Detach hidden layer from history so we don't backpropagate through every step
@@ -132,8 +144,6 @@ class Model(nn.Module):
             loss.backward()
             optimizer.step()
 
-            #torch.nn.utils.clip_grad_norm_(model.parameters(), 20)
-
             ### EVALUATION
             questions = (evaluation_helper.get_questions(np.asarray(questions_target)))
             preds = np.asarray(torch.sigmoid(tag_scores).detach())
@@ -159,12 +169,11 @@ class Model(nn.Module):
 
     def run_test(self, hidden):
         with torch.no_grad():
-            # TODO make work in general
             prediction_labels = []
             correct_labels = []
-            for i in range(NUM_BATCH_TEST):
+            for i in range(num_batch_test):
                 ### Forward pass
-                questions, answers, questions_target, answers_target, batch_seq_len = test_data.next(BATCH_SIZE, sequence_length)
+                questions, answers, questions_target, answers_target, batch_seq_len= test_data.next(BATCH_SIZE, sequence_length)
                 ### Detach hidden layer from history so we don't backpropagate through every step
                 ### and reuse the same weights
                 hidden = detach_hidden(hidden)
@@ -209,6 +218,7 @@ graph_rmse_train = []
 graph_rmse_test = []
 
 for epoch in range(NUM_EPOCHS):
+    print("EPOCH ", epoch)
 
     if LOG_COMET:
         experiment.set_step(epoch)
