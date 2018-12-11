@@ -14,7 +14,7 @@ import graph_helper
 SHOW_GRAPH = True
 LOG_COMET = True
 
-## Neural net params
+# Neural net params
 MAX_COUNT = 10000
 LEARNING_RATE = 0.001
 BATCH_SIZE = 80
@@ -26,14 +26,14 @@ num_layers = 2
 # Create an experiment with your api key
 if LOG_COMET:
     experiment = Experiment(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5", project_name="slepemapy-test")
-    optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
+    # optimizer = Optimizer(api_key="LNWEZpzWIqUYH9X3s6D3n7Co5")
     params = """  
     learning_rate real [0.0001, 0.01] [0.001] 
     state_size integer [10,500] [100] 
     dropout real [0, 1] [0.5]
     num_layers integer [1,5] [2]
     """
-    optimizer.set_params(params)
+    # optimizer.set_params(params)
     hyper_params = {"learning_rate": LEARNING_RATE, "epochs": NUM_EPOCHS, "batch_size": BATCH_SIZE,
                     "state_size": HIDDEN_SIZE, "dropout": DROPOUT, "num_layers": num_layers}
     experiment.log_multiple_params(hyper_params)
@@ -42,15 +42,9 @@ if LOG_COMET:
 torch.manual_seed(1)
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
-# DATA INITIALIZATION
-train_path = "/home/dave/projects/diploma/datasets/simulated_train.csv"
-test_path = "/home/dave/projects/diploma/datasets/simulated_test.csv"
-test_path = "/home/dave/projects/diploma/datasets/generated_test.txt"
-train_path = "/home/dave/projects/diploma/datasets/generated_train.txt"
+# DATA
 train_path = "/home/dave/projects/diploma/datasets/world_train2.csv"
 test_path = "/home/dave/projects/diploma/datasets/world_test2.csv"
-test_path = "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_test.csv"
-train_path= "/home/dave/projects/GoingDeeperWithDKT/data/2015_builder_train.csv"
 # RNN PARAMETERS
 
 train_data = data_helper.SlepeMapyData(train_path, MAX_COUNT, BATCH_SIZE, False)
@@ -60,9 +54,8 @@ num_batch_test = len(test_data.questions) // BATCH_SIZE
 num_classes = train_data.num_questions + 1
 input_size = num_classes + 1  # correct/incorrect or any other additional params
 sequence_length = max(train_data.max_seq_len, test_data.max_seq_len)
-# MODEL
 
-
+### MODEL ###
 def detach_hidden(h):
     if isinstance(h, torch.Tensor):
         return h.detach()
@@ -86,7 +79,7 @@ class Model(nn.Module):
                 torch.zeros(num_layers, self.batch_size, self.hidden_dim))
 
     def forward(self, questions, answers, hidden):
-        ### input preparation
+        ### input preparation ###
         # questions to Tensor
         questions = torch.tensor(questions)
         questions = torch.unsqueeze(questions, 2)
@@ -99,7 +92,7 @@ class Model(nn.Module):
         answers = torch.unsqueeze(answers, 2)
         input_concatenation = torch.cat((x, answers), 2)
 
-        # concatenation of additional params
+        # concatenation of additional params when available
         # options = torch.tensor(options, dtype=torch.float)
         # options = torch.unsqueeze(options, 2)
         # input_concatenation = torch.cat((input_concatenation, options), 2)
@@ -144,13 +137,13 @@ class Model(nn.Module):
             loss.backward()
             optimizer.step()
 
-            ### EVALUATION
+            # Preparing data for evaluation
             questions = (evaluation_helper.get_questions(np.asarray(questions_target)))
             preds = np.asarray(torch.sigmoid(tag_scores).detach())
             prediction_labels += (evaluation_helper.get_predictions(preds, questions))
             correct_labels += (evaluation_helper.get_labels(np.asarray(answers_target), questions))
 
-        # EVALUATION
+        ### EVALUATION ###
         rmse_train = evaluation_helper.rmse(correct_labels, prediction_labels)
         auc_train = evaluation_helper.auc(correct_labels, prediction_labels)
         pearson_train = evaluation_helper.pearson(correct_labels, prediction_labels)
@@ -182,8 +175,7 @@ class Model(nn.Module):
 
                 answers_target = torch.tensor(answers_target, dtype=torch.int64)
 
-
-                ### EVALUATION
+                # Preparing data for evaluation
                 questions = (evaluation_helper.get_questions(np.asarray(questions_target)))
                 preds = np.asarray(torch.sigmoid(tag_scores).detach())
                 prediction_labels += (evaluation_helper.get_predictions(preds, questions))
@@ -211,6 +203,7 @@ class Model(nn.Module):
         return
 
 
+### Model initialization
 model = Model(BATCH_SIZE, HIDDEN_SIZE, input_size, sequence_length)
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
@@ -231,8 +224,6 @@ for epoch in range(NUM_EPOCHS):
     if SHOW_GRAPH:
         graph_rmse_train.append(rmse_train)
         graph_rmse_test.append(rmse_test)
-
-
 
 
 if SHOW_GRAPH:

@@ -6,13 +6,11 @@ from comet_ml import Optimizer
 import tensorflow as tf
 
 ### Params for nn
-from nn_model import nn_model
-
 state_size = 100
 learning_rate = 0.1
 
 
-class Model(nn_model):
+class Model():
     def __init__(self, num_classes, steps, session, restore):
         num_steps = steps
         print(num_classes)

@@ -1,1 +1,0 @@
-Epoch test RMSE is: 0.49 

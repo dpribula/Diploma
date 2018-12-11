@@ -32,15 +32,12 @@ def run_data_on_nn(model, answer, question, seq_len, number):
 
 
     test_predictions = model.run_model_test(question, answer, seq_len)
-    # print(question[0])
-    # print(answer[0])
     questions = (evaluation_helper.get_questions(question))
     prediction_labels += (evaluation_helper.get_predictions(test_predictions, questions))
     correct_labels += (evaluation_helper.get_labels(answer, questions))
     # OUTPUT
     output_writer.output_for_map('maps/nn_output/', question, answer, seq_len,
                                  test_predictions, number)
-    #return questions, prediction_labels, correct_labels, test_predictions
 
 
 def get_map_from_data():
@@ -54,9 +51,7 @@ def get_map_from_data():
     cols = ['id', 'name', 'country_code']
 
     colors = 9
-    cmap = 'Blues'
     figsize = (16, 10)
-    year = '2016'
     cols2 = ['Country Name', 'Country Code']
 
 
